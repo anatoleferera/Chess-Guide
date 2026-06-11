@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chess Mastery Guide — 1500 to 1800</title>
+<meta name="description" content="Interactive chess opening guide with 62 annotated boards, puzzles, tactics and theory.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23c9a84c'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%230d0e10'%3E%E2%99%9F%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Chess Mastery Guide — 1500 to 1800">
+<meta property="og:description" content="62 interactive boards. 14 opening systems. Puzzles, tactics, endgames and theory — everything you need to break 1800.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anatoleferera.github.io/Chess-Guide/chess-guide.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chess Mastery Guide — 1500 to 1800">
+<meta name="twitter:description" content="Interactive chess guide: 62 boards, 14 opening systems, puzzles and theory.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  /* Colours */
+  --bg:        #0d0e10;
+  --surface:   #161819;
+  --surface2:  #1e2022;
+  --border:    rgba(255,255,255,.07);
+  --border2:   rgba(255,255,255,.12);
+  --gold:      #c9a84c;
+  --gold-dim:  rgba(201,168,76,.45);
+  --gold-glow: rgba(201,168,76,.12);
+  --cream:     #f0ebe2;
+  --muted:     rgba(240,235,226,.55);
+  --dim:       rgba(240,235,226,.28);
+  --green:     #4a9c52;
+  --green-dk:  #2e6b34;
+  --red:       #c0392b;
+  --blue:      #3a7bd5;
+
+  /* Board colours */
+  --bl: #e8f0d8;
+  --bd: #6b8c4a;
+
+  /* Sidebar */
+  --sidebar-w: 220px;
+  --header-h:  56px;
+
+  /* Typography */
+  --font-ui:   'DM Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-disp: 'Playfair Display', Georgia, serif;
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: var(--gold); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font-family: var(--font-ui); cursor: pointer; }
+
+/* ═══════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════ */
+#topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(13,14,16,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  z-index: 200;
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.topbar-logo-icon {
+  width: 32px; height: 32px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  color: var(--bg);
+  font-weight: 900;
+}
+
+.topbar-logo-text {
+  font-family: var(--font-disp);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.topbar-logo-text span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.topbar-spacer { flex: 1; }
+
+.topbar-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,.25);
+  padding: 4px 10px;
+  display: none;
+}
+
+@media (min-width: 640px) { .topbar-badge { display: block; } }
+
+.topbar-home {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border2);
+  padding: 7px 14px;
+  transition: all .2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topbar-home:hover {
+  color: var(--cream);
+  border-color: rgba(255,255,255,.25);
+  text-decoration: none;
+}
+
+/* Hamburger */
+#sidebar-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--cream);
+  width: 36px; height: 36px;
+  align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 860px) {
+  #sidebar-toggle { display: flex; }
+  .topbar-badge { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════
+   LAYOUT SHELL
+═══════════════════════════════════════════ */
+#app {
+  display: flex;
+  padding-top: var(--header-h);
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+#sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 100;
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201,168,76,.2) transparent;
+}
+
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: rgba(201,168,76,.2); border-radius: 2px; }
+
+@media (max-width: 860px) {
+  #sidebar {
+    transform: translateX(-100%);
+    box-shadow: 4px 0 24px rgba(0,0,0,.5);
+  }
+  #sidebar.open { transform: translateX(0); }
+  #sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 99;
+  }
+  #sidebar-overlay.show { display: block; }
+}
+
+/* Sidebar group headers */
+.nav-group {
+  padding: 20px 0 4px;
+}
+
+.nav-group-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 0 16px 6px;
+  display: block;
+}
+
+/* Nav items */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 16px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 400;
+  text-align: left;
+  transition: all .15s;
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 3px; bottom: 3px;
+  width: 3px;
+  background: var(--gold);
+  border-radius: 0 2px 2px 0;
+  opacity: 0;
+  transition: opacity .15s;
+}
+
+.nav-item:hover {
+  color: var(--cream);
+  background: rgba(255,255,255,.04);
+}
+
+.nav-item.active {
+  color: var(--gold);
+  background: var(--gold-glow);
+  font-weight: 500;
+}
+
+.nav-item.active::before { opacity: 1; }
+
+.nav-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+  opacity: .7;
+}
+
+.nav-item.active .nav-icon { opacity: 1; }
+
+.nav-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--dim);
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.nav-item.active .nav-count {
+  background: rgba(201,168,76,.1);
+  border-color: rgba(201,168,76,.3);
+  color: var(--gold-dim);
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+
+.sidebar-footer p {
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.sidebar-footer strong {
+  color: var(--gold-dim);
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+}
+
+/* ═══════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════ */
+#content {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  min-width: 0;
+  transition: margin-left .3s;
+}
+
+@media (max-width: 860px) {
+  #content { margin-left: 0; }
+}
+
+/* Breadcrumb bar */
+#breadcrumb {
+  padding: 12px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 1px;
+  position: sticky;
+  top: var(--header-h);
+  z-index: 50;
+}
+
+#breadcrumb .bc-home { color: var(--muted); }
+#breadcrumb .bc-sep  { color: var(--dim); }
+#breadcrumb .bc-cur  { color: var(--gold); }
+
+/* Sections */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 32px 80px;
+}
+
+@media (max-width: 600px) { main { padding: 24px 16px 60px; } }
+
+.section { display: none; animation: fadeIn .25s ease; }
+.section.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   SECTION TYPOGRAPHY
+═══════════════════════════════════════════ */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.section-header {
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-header h2 {
+  font-family: var(--font-disp);
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+
+.section-header p {
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+/* Cards */
+.card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  border-radius: 2px;
+}
+
+.card h3 {
+  font-family: var(--font-disp);
+  font-size: 17px;
+  color: var(--cream);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 13.5px;
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+.card p:last-child { margin-bottom: 0; }
+
+/* Tags */
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-right: 6px;
+  margin-bottom: 8px;
+}
+
+.tag-sharp     { background: rgba(192,57,43,.2);   color: #e67e73; border: 1px solid rgba(192,57,43,.35); }
+.tag-positional{ background: rgba(44,95,138,.2);   color: #6baed6; border: 1px solid rgba(44,95,138,.35); }
+.tag-solid     { background: rgba(74,156,82,.2);   color: #7ec880; border: 1px solid rgba(74,156,82,.35); }
+.tag-imbalanced{ background: rgba(201,168,76,.15); color: var(--gold); border: 1px solid rgba(201,168,76,.35); }
+.tag-aggressive{ background: rgba(192,57,43,.2);   color: #e67e73; border: 1px solid rgba(192,57,43,.35); }
+
+/* Principles grid */
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.principle {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.principle::before {
+  content: attr(data-num);
+  position: absolute;
+  top: -8px; right: 8px;
+  font-family: var(--font-disp);
+  font-size: 64px;
+  font-weight: 900;
+  color: rgba(201,168,76,.05);
+  line-height: 1;
+}
+
+.principle h4 {
+  font-family: var(--font-disp);
+  font-size: 15px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.principle p {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   CHESS BOARD — UPGRADED
+═══════════════════════════════════════════ */
+.board-widget {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 24px rgba(0,0,0,.4);
+}
+
+.board-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.board-side { display: flex; }
+
+.coord-ranks {
+  display: flex;
+  flex-direction: column;
+  margin-right: 4px;
+}
+
+.coord-rank {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(201,168,76,.4);
+  width: 14px;
+}
+
+.board-container { position: relative; }
+
+.chessboard {
+  display: grid;
+  grid-template-columns: repeat(8, 52px);
+  grid-template-rows: repeat(8, 52px);
+  border: 2px solid rgba(74,156,82,.7);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.5),
+    0 8px 32px rgba(0,0,0,.6),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+}
+
+.coord-files {
+  display: flex;
+  margin-top: 4px;
+  margin-left: 18px;
+}
+
+.coord-file {
+  width: 52px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(201,168,76,.4);
+}
+
+.sq {
+  width: 52px; height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  line-height: 1;
+  position: relative;
+  user-select: none;
+  transition: background .1s;
+}
+
+.sq.light { background: var(--bl); }
+.sq.dark  { background: var(--bd); }
+
+.sq.hl-move  { background: rgba(255,214,10,.5)  !important; }
+.sq.hl-red   { background: rgba(220,60,60,.5)   !important; }
+.sq.hl-green { background: rgba(100,210,110,.5) !important; }
+.sq.hl-blue  { background: rgba(70,140,230,.45) !important; }
+
+.sq .wp {
+  color: #fff;
+  text-shadow: 0 0 2px #000, 0 0 4px #000, 1px 1px 2px rgba(0,0,0,.8);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.5));
+}
+
+.sq .bp {
+  color: #1a1a1a;
+  text-shadow: 0 0 3px rgba(255,255,255,.6), 0 0 6px rgba(255,255,255,.3);
+  filter: drop-shadow(0 1px 2px rgba(255,255,255,.2));
+}
+
+.arrow-canvas {
+  position: absolute; top: 0; left: 0;
+  pointer-events: none; z-index: 10;
+}
+
+/* Move controls */
+.move-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.mbtn {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all .15s;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.mbtn:hover { background: rgba(201,168,76,.15); border-color: rgba(201,168,76,.5); }
+.mbtn:disabled { opacity: .25; cursor: default; }
+
+.mcounter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold-dim);
+  min-width: 70px;
+  text-align: center;
+}
+
+/* Move pills */
+/* Legacy pills (kept for free-play) */
+.move-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 8px;
+  max-width: 436px;
+}
+
+.mpill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 7px;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  cursor: pointer;
+  transition: all .12s;
+  border-radius: 2px;
+  background: transparent;
+}
+
+.mpill:hover, .mpill.on {
+  background: rgba(201,168,76,.12);
+  color: var(--gold);
+  border-color: rgba(201,168,76,.45);
+}
+
+.mpill-num { color: rgba(201,168,76,.3); margin-right: 2px; }
+
+/* ── NOTATION PANEL (scrollable game score) ── */
+.notation-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  align-content: flex-start;
+  max-height: 132px;
+  overflow-y: auto;
+  background: rgba(0,0,0,.25);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201,168,76,.3) transparent;
+}
+.notation-panel::-webkit-scrollbar { width: 5px; }
+.notation-panel::-webkit-scrollbar-thumb { background: rgba(201,168,76,.3); border-radius: 3px; }
+
+.notation-panel .nrow {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-right: 6px;
+  white-space: nowrap;
+}
+
+.notation-panel .nnum {
+  color: rgba(201,168,76,.4);
+  font-size: 11px;
+  min-width: 18px;
+}
+
+.notation-panel .nmove {
+  color: var(--muted);
+  cursor: pointer;
+  padding: 1px 5px;
+  border-radius: 3px;
+  transition: all .12s;
+}
+
+.notation-panel .nmove:hover {
+  background: rgba(201,168,76,.1);
+  color: var(--cream);
+}
+
+.notation-panel .nmove.on {
+  background: var(--gold);
+  color: #14110b;
+  font-weight: 500;
+}
+
+/* ── EVALUATION BAR ── */
+.eval-bar {
+  width: 18px;
+  height: 416px;
+  background: #2a2c2e;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  margin-right: 6px;
+  display: none;
+  flex-direction: column-reverse;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.eval-fill {
+  width: 100%;
+  background: linear-gradient(to top, #f4f1ea, #e8e3d8);
+  height: 50%;
+  transition: height .35s cubic-bezier(.4,0,.2,1);
+}
+
+.eval-num {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  z-index: 2;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: .5px;
+}
+
+@media (max-width: 700px) {
+  .eval-bar { height: 304px; width: 14px; }
+}
+
+/* Board info panel */
+.board-info { flex: 1; min-width: 250px; }
+
+.board-title {
+  font-family: var(--font-disp);
+  font-size: 18px;
+  color: var(--cream);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.board-desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.board-tip {
+  background: rgba(201,168,76,.06);
+  border-left: 3px solid var(--gold);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: rgba(240,235,226,.85);
+  line-height: 1.6;
+  border-radius: 0 3px 3px 0;
+}
+
+/* ── MODEL GAME box ── */
+.board-modelgame {
+  margin-top: 10px;
+  padding: 9px 14px;
+  background: rgba(58,123,213,.07);
+  border-left: 3px solid var(--blue, #3a7bd5);
+  border-radius: 0 3px 3px 0;
+  font-size: 12.5px;
+  color: rgba(240,235,226,.8);
+  line-height: 1.55;
+  display: none;
+}
+.board-modelgame.show { display: block; }
+.board-modelgame .mg-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--blue, #6ba3e8);
+  display: block;
+  margin-bottom: 3px;
+}
+.board-modelgame strong { color: #9cc3f0; }
+
+/* ── TRANSPOSITION box ── */
+.board-transpose {
+  margin-top: 8px;
+  padding: 9px 14px;
+  background: rgba(160,120,200,.07);
+  border-left: 3px solid #a878c8;
+  border-radius: 0 3px 3px 0;
+  font-size: 12.5px;
+  color: rgba(240,235,226,.8);
+  line-height: 1.55;
+  display: none;
+}
+.board-transpose.show { display: block; }
+.board-transpose .tr-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #c4a0e0;
+  display: block;
+  margin-bottom: 3px;
+}
+.board-transpose strong { color: #d4b8ec; }
+
+.board-tip strong { color: var(--gold); }
+
+.board-warn {
+  background: rgba(192,57,43,.08);
+  border-left: 3px solid #c0392b;
+  padding: 9px 14px;
+  font-size: 13px;
+  color: rgba(240,235,226,.8);
+  line-height: 1.6;
+  margin-top: 6px;
+  display: none;
+  border-radius: 0 3px 3px 0;
+}
+
+.board-warn strong { color: #e67e73; }
+.board-warn.show { display: block; }
+
+/* Free play */
+.free-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all .2s;
+  margin-top: 6px;
+  border-radius: 3px;
+}
+
+.free-play-btn:hover { background: rgba(255,255,255,.07); color: var(--cream); }
+.free-play-btn.active { background: rgba(74,156,82,.15); border-color: rgba(74,156,82,.5); color: #7ec880; }
+.free-play-badge { font-size: 9px; padding: 2px 5px; border-radius: 2px; background: rgba(74,156,82,.2); color: #7ec880; border: 1px solid rgba(74,156,82,.4); margin-left: 4px; display: none; }
+.free-play-btn.active .free-play-badge { display: inline; }
+
+.sq.drag-over  { background: rgba(255,214,10,.65)   !important; outline: 3px solid rgba(255,214,10,.9); }
+.sq.selected   { background: rgba(100,200,255,.5)   !important; outline: 2px solid rgba(100,200,255,.9); }
+.sq.can-move   { background: rgba(100,210,110,.4)   !important; }
+.sq[draggable="true"] { cursor: grab; }
+.sq[draggable="true"]:active { cursor: grabbing; }
+
+/* ═══════════════════════════════════════════
+   MOBILE BOARD
+═══════════════════════════════════════════ */
+@media (max-width: 700px) {
+  .board-widget { padding: 14px; gap: 16px; }
+  .chessboard {
+    grid-template-columns: repeat(8, 38px);
+    grid-template-rows: repeat(8, 38px);
+  }
+  .sq { width: 38px; height: 38px; font-size: 25px; }
+  .coord-rank { height: 38px; }
+  .coord-file { width: 38px; }
+}
+
+/* ═══════════════════════════════════════════
+   MISC COMPONENTS (from original)
+═══════════════════════════════════════════ */
+.rating-badge { display: none; } /* Moved to topbar */
+
+.endgame-category { margin-bottom: 28px; }
+.endgame-category h3 {
+  font-family: var(--font-disp);
+  font-size: 20px;
+  color: var(--cream);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+
+.endgame-item {
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+  gap: 14px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.endgame-item:last-child { border-bottom: none; }
+.endgame-name { font-family: var(--font-mono); color: var(--cream); font-size: 12px; }
+.endgame-desc { color: var(--muted); font-size: 13px; }
+
+.priority { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
+.p-critical { background: rgba(192,57,43,.2);   color: #e67e73; border: 1px solid rgba(192,57,43,.3); }
+.p-high     { background: rgba(201,168,76,.15); color: var(--gold); border: 1px solid rgba(201,168,76,.3); }
+.p-medium   { background: rgba(44,95,138,.2);   color: #6baed6; border: 1px solid rgba(44,95,138,.3); }
+
+.week-block { display: grid; grid-template-columns: 72px 1fr; gap: 0; margin-bottom: 4px; }
+.week-label {
+  font-family: var(--font-mono); font-size: 11px; color: var(--gold);
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 16px 0; border-right: 1px solid rgba(201,168,76,.25);
+  writing-mode: vertical-rl; text-align: center;
+  background: rgba(201,168,76,.04);
+}
+.week-content {
+  padding: 16px 20px; background: var(--surface2);
+  border: 1px solid var(--border); border-left: none;
+}
+.week-content h4 { font-family: var(--font-disp); font-size: 16px; color: var(--cream); margin-bottom: 8px; }
+.week-content ul { list-style: none; padding: 0; }
+.week-content ul li { font-size: 13px; color: var(--muted); padding: 3px 0 3px 14px; position: relative; }
+.week-content ul li::before { content: "→"; position: absolute; left: 0; color: var(--gold); font-size: 11px; }
+
+.tactic-box { background: rgba(201,168,76,.04); border: 1px solid rgba(201,168,76,.2); padding: 16px 20px; margin: 14px 0; border-radius: 2px; }
+.tactic-box .tactic-type { font-family: var(--font-mono); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.tactic-box p { font-size: 13px; color: var(--muted); }
+
+.resource-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+.resource-icon { width: 36px; height: 36px; background: rgba(201,168,76,.08); border: 1px solid rgba(201,168,76,.25); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; border-radius: 3px; }
+.resource-info h4 { font-size: 14px; color: var(--cream); margin-bottom: 2px; }
+.resource-info p { font-size: 12px; color: var(--muted); }
+.resource-type { margin-left: auto; font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-dim); white-space: nowrap; }
+
+@media (max-width: 600px) {
+  .endgame-item { grid-template-columns: 1fr; gap: 4px; }
+  .week-block { grid-template-columns: 1fr; }
+  .week-label { writing-mode: horizontal-tb; padding: 8px 14px; border-right: none; border-bottom: 1px solid rgba(201,168,76,.25); }
+}
+
+/* ═══════════════════════════════════════════
+   PUZZLE REFRESH BUTTON
+═══════════════════════════════════════════ */
+button[onclick="refreshPuzzles()"] {
+  background: var(--surface2) !important;
+  border: 1px solid rgba(201,168,76,.4) !important;
+  color: var(--gold) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+  padding: 10px 22px !important;
+  cursor: pointer !important;
+  transition: all .2s !important;
+  border-radius: 3px !important;
+}
+
+button[onclick="refreshPuzzles()"]:hover {
+  background: rgba(201,168,76,.12) !important;
+  box-shadow: 0 0 16px rgba(201,168,76,.15) !important;
+}
+
+/* ═══════════════════════════════════════════
+   HR DIVIDERS
+═══════════════════════════════════════════ */
+hr[style*="border-top"] {
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  margin: 28px 0 !important;
+}
+
+/* ═══════════════════════════════════════════
+   PROGRESS BAR (bottom of page)
+═══════════════════════════════════════════ */
+#reading-progress {
+  position: fixed;
+  top: var(--header-h);
+  left: var(--sidebar-w);
+  right: 0;
+  height: 2px;
+  background: transparent;
+  z-index: 150;
+}
+
+#reading-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #e8d5a0);
+  width: 0%;
+  transition: width .1s linear;
+}
+
+@media (max-width: 860px) {
+  #reading-progress { left: 0; }
+}
+
+/* ═══════════════════════════════════════════
+   SECTION HERO BANNERS
+═══════════════════════════════════════════ */
+.section-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-header::after {
+  content: attr(data-piece);
+  position: absolute;
+  right: -10px;
+  top: -20px;
+  font-size: 120px;
+  line-height: 1;
+  color: rgba(201,168,76,.04);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR (webkit)
+═══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); }
+
+</style>
+</head>
+<body>
+
+<!-- Reading progress bar -->
+<div id="reading-progress"><div id="reading-progress-bar"></div></div>
+
+<!-- Sidebar overlay (mobile) -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- ── TOPBAR ── -->
+<div id="topbar">
+  <button id="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+
+  <a href="https://anatoleferera.github.io/Chess-Guide/index.html" class="topbar-logo">
+    <div class="topbar-logo-icon">♟</div>
+    <div class="topbar-logo-text">
+      Chess Mastery
+      <span>1500 → 1800</span>
+    </div>
+  </a>
+
+  <div class="topbar-spacer"></div>
+  <span class="topbar-badge">~1500 Rapid · chess.com</span>
+  <a href="https://anatoleferera.github.io/Chess-Guide/index.html" class="topbar-home">← Home</a>
+</div>
+
+<!-- ── APP SHELL ── -->
+<div id="app">
+
+  <!-- ── SIDEBAR NAV ── -->
+  <nav id="sidebar">
+
+    <div class="nav-group">
+      <span class="nav-group-label">As White</span>
+      <button class="nav-item active" onclick="showSection('white',this)" data-section="white">
+        <span class="nav-icon">♔</span> White Openings <span class="nav-count">6</span>
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">vs 1.e4</span>
+      <button class="nav-item" onclick="showSection('vsE4',this)" data-section="vsE4">
+        <span class="nav-icon">♛</span> vs 1.e4 <span class="nav-count">11</span>
+      </button>
+      <button class="nav-item" onclick="showSection('vsAlekhine',this)" data-section="vsAlekhine">
+        <span class="nav-icon">♞</span> Alekhine <span class="nav-count">4</span>
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">vs 1.d4</span>
+      <button class="nav-item" onclick="showSection('vsD4',this)" data-section="vsD4">
+        <span class="nav-icon">♜</span> vs 1.d4 <span class="nav-count">9</span>
+      </button>
+      <button class="nav-item" onclick="showSection('vsKID',this)" data-section="vsKID">
+        <span class="nav-icon">♝</span> King's Indian <span class="nav-count">3</span>
+      </button>
+      <button class="nav-item" onclick="showSection('vsQID',this)" data-section="vsQID">
+        <span class="nav-icon">♟</span> Queen's Indian <span class="nav-count">3</span>
+      </button>
+      <button class="nav-item" onclick="showSection('vsQG',this)" data-section="vsQG">
+        <span class="nav-icon">♛</span> vs Queen's Gambit <span class="nav-count">4</span>
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Sicilian</span>
+      <button class="nav-item" onclick="showSection('openings',this)" data-section="openings">
+        <span class="nav-icon">♚</span> Sicilian Defence <span class="nav-count">5</span>
+      </button>
+      <button class="nav-item" onclick="showSection('counters',this)" data-section="counters">
+        <span class="nav-icon">⚔</span> Anti-Sicilian <span class="nav-count">4</span>
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Improve</span>
+      <button class="nav-item" onclick="showSection('middlegame',this)" data-section="middlegame">
+        <span class="nav-icon">⚡</span> Middlegame <span class="nav-count">3</span>
+      </button>
+      <button class="nav-item" onclick="showSection('endgame',this)" data-section="endgame">
+        <span class="nav-icon">♔</span> Endgames <span class="nav-count">3</span>
+      </button>
+      <button class="nav-item" onclick="showSection('tactics',this)" data-section="tactics">
+        <span class="nav-icon">🎯</span> Tactics <span class="nav-count">3</span>
+      </button>
+      <button class="nav-item" onclick="showSection('puzzles',this)" data-section="puzzles">
+        <span class="nav-icon">🧩</span> Puzzles <span class="nav-count">15</span>
+      </button>
+      <button class="nav-item" onclick="showSection('theory',this)" data-section="theory">
+        <span class="nav-icon">📖</span> Theory <span class="nav-count">5</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <p><strong>62 boards</strong> · 14 sections<br>Step through every position<br>or explore in free play.</p>
+    </div>
+
+  </nav>
+
+  <!-- ── CONTENT ── -->
+  <div id="content">
+
+    <!-- Breadcrumb -->
+    <div id="breadcrumb">
+      <span class="bc-home">Chess Mastery</span>
+      <span class="bc-sep">/</span>
+      <span class="bc-cur" id="bc-current">White Openings</span>
+    </div>
+
+    <!-- All sections injected here -->
+    <main>
+
+<div id="white" class="section active">
+  <div class="section-header">
+    <div class="section-label">Playing as White · ~1500 Rapid</div>
+    <h2>Best White Openings for Your Rating</h2>
+    <p>At 1500, you want openings that are easy to understand, hard for opponents to sidestep, and rich in plans you can apply without memorising 20 moves of theory. These four systems are ideal — each one gives you a clear structure and winning ideas that work at club level and beyond.</p>
+  </div>
+
+  <div class="card">
+    <h3>What Makes a Good 1500-Level White Opening?</h3>
+    <p><strong style="color:var(--gold)">Clear plans</strong> — you should know what to do without memorising every line. <strong style="color:var(--gold)">Structural consistency</strong> — the same ideas apply regardless of what Black plays. <strong style="color:var(--gold)">Fighting chances</strong> — passive openings at 1500 lead to boring draws. <strong style="color:var(--gold)">Minimal forced theory</strong> — if you forget a move, the position should still make sense.</p>
+    <p>The four systems below all pass this test. Two start with 1.d4 (London, Queen&#39;s Gambit), one with 1.e4 (Italian), and one is a flexible flank opening (Réti) that can transpose into anything.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="★">
+      <h4>London System (1.d4 + Bf4)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★☆☆☆ — Easiest to learn. Same setup every game regardless of what Black does. Ideal if you want to focus on middlegame and endgame improvement rather than opening theory.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: players who want consistency and simplicity</p>
+    </div>
+    <div class="principle" data-num="★">
+      <h4>Italian Game (1.e4 e5 Bc4)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★★☆☆ — Natural development, open tactical positions. Perfect for improving tactical vision. Leads to the kinds of attacking middlegames where 1500 players thrive.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: tactical, attacking players who play 1.e4</p>
+    </div>
+    <div class="principle" data-num="★">
+      <h4>Queen&#39;s Gambit (1.d4 d5 2.c4)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★★★☆ — More theory but rewards deeply. Gives White a space advantage and long-term pressure. World Championship weapon at every level.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: positional players who want a serious edge</p>
+    </div>
+    <div class="principle" data-num="★">
+      <h4>Réti Opening (1.Nf3 + g3)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★★☆☆ — Ultra-flexible. Avoids all mainline theory, transposes into whatever position suits you. Forces Black to show their hand first.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: flexible players who hate being in opponent&#39;s prep</p>
+    </div>
+    <div class="principle" data-num="★">
+      <h4>vs Queen's Gambit Accepted (2...dxc4)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★★★☆ — Requires knowing a key idea: recover the pawn with e4, not e3. When Black accepts, White gets a powerful centre and a development lead in return for the c4 pawn.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: QG players who want to punish pawn grabbers</p>
+    </div>
+  </div>
+
+  <div id="bw-london"></div>
+  <div id="bw-italian"></div>
+  <div id="bw-qgwhite"></div>
+  <div id="bw-qga-white"></div>
+  <div id="bw-reti"></div>
+
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Punishing Mistakes · 1.d4</div>
+    <h2>When Black Plays 1...e5?! Against Your d4</h2>
+    <p>A surprisingly common mistake at club level. Black plays 1...e5 hoping to transpose into a King's Pawn game, not realising that against 1.d4 this simply loses a pawn for nothing. Knowing exactly how to punish it means free material every time an opponent tries it.</p>
+  </div>
+  <div class="card">
+    <h3>Why 1...e5 Fails Against 1.d4</h3>
+    <p>After <strong style="color:var(--gold);font-family:'IBM Plex Mono',monospace">1.d4 e5?!</strong>, White simply takes: <strong style="color:var(--gold);font-family:'IBM Plex Mono',monospace">2.dxe5</strong>. Unlike in the King's Gambit (1.e4 e5 2.f4), Black has no compensation here. There is no open f-file, no attacking initiative, no structural damage to White — Black has just given away a central pawn.</p>
+    <p>The most common follow-up is <strong style="color:var(--gold)">2...Nc6 3.Nf3 Qe7</strong> — Black tries to win the pawn back with the queen. White responds with <strong style="color:var(--gold)">4.Nc3!</strong>, developing a piece and setting a trap. If Black plays <strong style="color:var(--gold)">4...Nxe5??</strong>, then <strong style="color:var(--gold)">5.Nd5!</strong> attacks the queen and threatens Nxc7+ — after the forced 5...Qd8, White plays <strong style="color:var(--gold)">6.Nxe5</strong> and wins a full piece.</p>
+    <p><strong style="color:var(--gold)">Key principle:</strong> Take the free pawn. Develop fast. Do not give it back. White should play like a one-pawn-up Italian Game — bishop to c4, knight to c3, castle, and dominate.</p>
+  </div>
+  <div id="bw-d4-e5"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Which Should You Play?</h3>
+    <p><strong style="color:var(--gold)">If you play 1.e4:</strong> The Italian is your best choice. It leads to open, tactical positions where you can use the attacking skills you build with the Sicilian as Black. The ideas — control the centre, activate all pieces, attack the king — are the same every game.</p>
+    <p><strong style="color:var(--gold)">If you play 1.d4:</strong> Start with the London System. It requires almost no theory — just deploy Bf4, e3, Bd3, Nf3, and castle. Once you understand the structure, upgrade to the Queen&#39;s Gambit for more ambitious play.</p>
+    <p><strong style="color:var(--gold)">If you want to confuse opponents:</strong> The Réti avoids all standard theory. Black can&#39;t prepare against you specifically — they must play on general principles, where your preparation gives you an edge.</p>
+    <p><strong style="color:var(--gold)">The one opening to avoid at 1500:</strong> The King&#39;s Gambit (1.e4 e5 2.f4). Too risky for the reward — precise defence refutes it. Stick to solid systems and win through superior understanding.</p>
+  </div>
+</div>
+<div id="vsE4" class="section">
+  <div class="section-header">
+    <div class="section-label">Black vs 1.e4</div>
+    <h2>How Black Fights 1.e4</h2>
+    <p>Besides the Sicilian, Black has four other major responses to 1.e4 — each with a distinct character. Understanding all five gives you a complete picture of Black&#39;s options and helps you choose the right weapon for your style.</p>
+  </div>
+
+  <div class="card">
+    <h3>Choosing Your Weapon</h3>
+    <p>Every response to 1.e4 reflects a philosophy. The Sicilian fights for asymmetry and counterplay. The French is solid and strategic. The Caro-Kann is rock-solid with good endgames. The Pirc/Modern is a hyper-modern setup. The Petroff neutralises everything for a draw or grind.</p>
+    <p>At 1500, the most important thing is to pick <strong style="color:var(--gold)">one</strong> and learn the ideas behind it — not memorise 20 moves of theory.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="1">
+      <h4>French Defence (1...e6)</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Solid, strategic, counterattacking. Black accepts a cramped position short-term for a rock-solid structure and counterplay on the queenside.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: patient, positional players</p>
+    </div>
+    <div class="principle" data-num="2">
+      <h4>Caro-Kann (1...c6)</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Rock-solid, endgame-focused. Black gets a strong pawn structure and the light-squared bishop outside the pawn chain. Very reliable.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: endgame lovers, solid defenders</p>
+    </div>
+    <div class="principle" data-num="3">
+      <h4>Pirc / Modern (1...d6/g6)</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Hyper-modern, flexible. Black lets White build a big centre then attacks it. The Dragon bishop on g7 controls the long diagonal.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: dynamic, counter-attacking players</p>
+    </div>
+    <div class="principle" data-num="4">
+      <h4>Scandinavian (1...d5)</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Immediate central challenge. Black exchanges pawns on move 1 and brings the queen out early. Simple to learn, leads to clear positions.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: players who like clear plans early</p>
+    </div>
+    <div class="principle" data-num="5">
+      <h4>Petroff Defence (1...e5)</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Ultra-solid, symmetrical. Black counters immediately with 2...Nf6 — not defending e5, but attacking e4. Leads to equal, drawish positions.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: players who prefer safety and solidity</p>
+    </div>
+  </div>
+
+  <div id="bw-french"></div>
+  <div id="bw-caro"></div>
+  <div id="bw-pirc"></div>
+  <div id="bw-scandinavian"></div>
+  <div id="bw-petroff"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Comparison at a Glance</h3>
+    <p><strong style="color:var(--gold)">Most dynamic:</strong> Sicilian &gt; Pirc/Modern &gt; French &gt; Scandinavian &gt; Caro-Kann &gt; Petroff</p>
+    <p><strong style="color:var(--gold)">Most solid:</strong> Petroff &gt; Caro-Kann &gt; French &gt; Scandinavian &gt; Pirc &gt; Sicilian</p>
+    <p><strong style="color:var(--gold)">Easiest to learn:</strong> Scandinavian &gt; Caro-Kann &gt; Pirc &gt; French &gt; Petroff &gt; Sicilian</p>
+    <p><strong style="color:var(--gold)">Most theory:</strong> Sicilian &gt; Ruy López &gt; French &gt; Caro-Kann &gt; Petroff &gt; Pirc &gt; Scandinavian</p>
+  </div>
+
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+
+  <div class="section-header">
+    <div class="section-label">Black vs 1.e4 · The Spanish</div>
+    <h2>The Ruy López</h2>
+    <p>The most important 1.e4 e5 opening in chess. After 1.e4 e5 2.Nf3 Nc6 3.Bb5, White attacks the knight that defends e5 — creating immediate pressure without capturing anything. The most played, most studied, and most theoretically rich opening at every level from club player to world champion.</p>
+  </div>
+
+  <div class="card">
+    <h3>The Core Idea</h3>
+    <p>The bishop on b5 doesn't immediately win the e5 pawn — after 3...a6 4.Ba4 Nf6 5.0-0, if Black plays 5...Nxe4, White gets tremendous compensation. The real threat is long-term: White will play c3+d4, build a strong centre, and the Bb5/Ba4 puts permanent pressure on the c6 knight that defends e5. Black must constantly watch this pressure.</p>
+    <p><strong style="color:var(--gold)">The three main systems:</strong> The <strong>Berlin</strong> (3...Nf6) is ultra-solid and leads to an endgame — Carlsen's weapon of choice. The <strong>Classical</strong> (3...a6 4.Ba4 Nf6 5.0-0 Be7) is the richest and most complex. The <strong>Exchange</strong> (4.Bxc6) gives Black doubled pawns for the bishop pair — positional and unbalanced.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="B">
+      <h4>Berlin Defence (3...Nf6)</h4>
+      <p>Black attacks e4 immediately. After 4.0-0 Nxe4 5.d4 Nd6 6.Bxc6 dxc6 7.dxe5 Nf5 8.Qxd8+ Kxd8, Black enters an endgame down in pawn structure but with the bishop pair and a solid position. The "Berlin Wall" — notoriously hard to break down.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: solid, endgame-oriented players</p>
+    </div>
+    <div class="principle" data-num="C">
+      <h4>Classical / Closed (3...a6 4.Ba4 Nf6 5.0-0 Be7)</h4>
+      <p>The most theoretically rich continuation. White plays c3+d4 to build a strong centre. Black defends with ...b5, ...d6, ...0-0 and prepares counterplay. Leads to the rich Chigorin (9...Na5) or Marshall Attack structures.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: players who want the full Ruy López experience</p>
+    </div>
+    <div class="principle" data-num="X">
+      <h4>Exchange Variation (4.Bxc6)</h4>
+      <p>White immediately captures on c6, giving Black doubled c-pawns. Black gets the bishop pair and a half-open d-file. White aims to exploit the doubled pawns in the endgame. An instructive positional battle about pawn structure vs piece activity.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: positional players, endgame lovers</p>
+    </div>
+  </div>
+
+  <div id="bw-ruy-berlin"></div>
+  <div id="bw-ruy-classical"></div>
+  <div id="bw-ruy-exchange"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Why the Ruy López Matters at 1500</h3>
+    <p><strong style="color:var(--gold)">White will play it against you.</strong> At 1500, a huge number of White players open 1.e4 and know the Ruy López. If you play 1...e5, knowing at least the basic ideas of the Berlin or Classical is essential — you will face it constantly.</p>
+    <p><strong style="color:var(--gold)">The key defensive idea in the Classical:</strong> After White plays c3+d4, Black must NOT allow White to build d4+e4 uncontested. The ...b5+...d6 setup with ...0-0 and ...Na5 (the Chigorin) is Black's most reliable response. Always play ...b5 to kick the bishop off the a4-e8 diagonal before White plays d4.</p>
+    <p><strong style="color:var(--gold)">The Berlin Wall at your level:</strong> The Berlin endgame (after Qxd8+ Kxd8) looks scary because Black can't castle — but it is completely solid. White has no real advantage. Black's plan is to bring the king to e8, develop the bishops, and use the bishop pair in the endgame. Don't be afraid of it.</p>
+  </div>
+
+</div>
+<div id="vsAlekhine" class="section">
+  <div class="section-header">
+    <div class="section-label">Black vs 1.e4 · Hypermodern</div>
+    <h2>The Alekhine Defence</h2>
+    <p>Named after World Champion Alexander Alekhine, this is one of the boldest responses to 1.e4. Black immediately attacks the e4 pawn with 1...Nf6, inviting White to chase the knight around the board — and in doing so, overextend their pawns. A true hypermodern defence: provoke, lure, then destroy.</p>
+  </div>
+
+  <div class="card">
+    <h3>The Core Philosophy</h3>
+    <p>In the Alekhine, Black deliberately lets White build a massive pawn centre with e5, d4, c4 and sometimes f4. This looks dangerous — but Black&#39;s goal is to make those pawns <em>liabilities</em>, not assets. The overextended White centre becomes a target. Black manoeuvres around it, attacks its base with ...d6, ...c5 or ...c6, and when the centre collapses, Black&#39;s pieces dominate the open board.</p>
+    <p><strong style="color:var(--gold)">Key difference from the Sicilian:</strong> In the Sicilian Black fights for the centre from move 1. In the Alekhine, Black <em>gives</em> White the centre on purpose, then demolishes it later. Both share the same goal — dynamic counterplay — but with opposite strategies.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="1">
+      <h4>Four Pawns Attack</h4>
+      <p>White plays e5, d4, c4, f4 — a massive pawn wall. Very aggressive but overextended. Black breaks with ...dxe5 to open lines and expose the weakened White structure.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Sharpest variation — requires exact play from both sides</p>
+    </div>
+    <div class="principle" data-num="2">
+      <h4>Modern Variation</h4>
+      <p>White plays e5, d4, Nf3 — more restrained. Black exchanges the pawn with ...dxe5 and plays ...c6 for a solid structure with active piece play. Most popular at club level.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best all-round line for club players</p>
+    </div>
+    <div class="principle" data-num="3">
+      <h4>Chase Variation (c4-c5)</h4>
+      <p>White chases the knight with c4-c5, trying to gain tempo. Black allows it and exchanges on c3, giving White doubled pawns. A strategic concession that gives Black structural compensation.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Solid and reliable — good for positional players</p>
+    </div>
+    <div class="principle" data-num="4">
+      <h4>Brooklyn Variation (...Nc6)</h4>
+      <p>Black plays ...Nc6, developing a second piece and adding pressure on d4. Less theory required. After White plays exd6, Black recaptures with the c-pawn and builds a Dragon-like structure.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Easy to learn — natural development + ...d5 break</p>
+    </div>
+  </div>
+
+  <div id="bw-alefour"></div>
+  <div id="bw-alemod"></div>
+  <div id="bw-alechase"></div>
+  <div id="bw-alebrook"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Why the Alekhine Works at 1500</h3>
+    <p><strong style="color:var(--gold)">Most opponents don&#39;t know it.</strong> At 1500, the vast majority of White players don&#39;t study the Alekhine. They know they should chase the knight but don&#39;t know exactly how to do it correctly — and every inaccuracy favours Black.</p>
+    <p><strong style="color:var(--gold)">It&#39;s psychologically unsettling.</strong> White players who expect 1...e5 or 1...c5 are immediately thrown off balance. They often overreach, which is exactly what you want.</p>
+    <p><strong style="color:var(--gold)">Pairs well with the Sicilian.</strong> Both are dynamic, counterattacking defences with opposite-wing ideas. If White plays an Anti-Sicilian, you can switch to the Alekhine and keep the same aggressive mindset.</p>
+    <p><strong style="color:var(--gold)">The one risk:</strong> The Four Pawns Attack (4.f4) is genuinely dangerous if you don&#39;t know the theory. Learn the ...dxe5 break and you&#39;re fine.</p>
+  </div>
+</div>
+<div id="vsD4" class="section">
+  <div class="section-header">
+    <div class="section-label">Black vs 1.d4</div>
+    <h2>How Black Fights 1.d4</h2>
+    <p>The Queen&#39;s Pawn Opening is White&#39;s most solid choice — no open files early, slower development, more structural battles. Black has five major systems to choose from, each with a completely different character and set of ideas.</p>
+  </div>
+
+  <div class="card">
+    <h3>The d4 Landscape</h3>
+    <p>Unlike 1.e4 where Black can launch immediate tactical counterplay, 1.d4 games are typically slower and more positional. White aims to build a large centre, develop harmoniously, and outplay Black in a long manoeuvring game. Black&#39;s job is to challenge that centre or create imbalances that generate winning chances.</p>
+    <p><strong style="color:var(--gold)">Two philosophies:</strong> Play <em>with</em> the centre (QGD, Nimzo) — solid, equal — or attack the centre from the flanks (King&#39;s Indian, Grünfeld) — dynamic, unbalanced, rich in counterplay.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="1">
+      <h4>King&#39;s Indian Defence</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Dynamic, aggressive. Black lets White build a big centre then launches a ferocious kingside attack. The Dragon bishop on g7 is the key weapon.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: tactical, attacking players</p>
+    </div>
+    <div class="principle" data-num="2">
+      <h4>Nimzo-Indian</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Strategic, flexible. Black pins the c3 knight with Bb4, ruins White&#39;s pawn structure, and fights for the centre with pieces rather than pawns.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: positional players who like piece play</p>
+    </div>
+    <div class="principle" data-num="3">
+      <h4>Queen&#39;s Gambit Declined</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Rock-solid, classical. Black declines the gambit, builds a strong pawn structure, and aims for a safe, equal game with slight counterplay.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: solid, defensive players</p>
+    </div>
+    <div class="principle" data-num="4">
+      <h4>Queen&#39;s Gambit Accepted</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Active, slightly risky. Black accepts the pawn and aims to use the half-open c-file and piece activity to compensate for White&#39;s centre.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: players who like active piece play</p>
+    </div>
+    <div class="principle" data-num="5">
+      <h4>Grünfeld Defence</h4>
+      <p><strong style="color:var(--gold)">Style:</strong> Hyper-modern, sharp. Black gives White a massive centre then demolishes it with ...c5. The Grünfeld bishop on g7 pressures d4 for the whole game.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: dynamic players who know theory</p>
+    </div>
+  </div>
+
+  <div id="bw-nimzo"></div>
+  <div id="bw-qgd"></div>
+  <div id="bw-qga"></div>
+  <div id="bw-grunfeld"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Choosing Your d4 Weapon</h3>
+    <p><strong style="color:var(--gold)">Most dynamic:</strong> Grünfeld &gt; King&#39;s Indian &gt; QGA &gt; Nimzo-Indian &gt; QGD</p>
+    <p><strong style="color:var(--gold)">Most solid:</strong> QGD &gt; Nimzo-Indian &gt; QGA &gt; King&#39;s Indian &gt; Grünfeld</p>
+    <p><strong style="color:var(--gold)">Easiest to learn:</strong> QGD &gt; QGA &gt; Nimzo-Indian &gt; King&#39;s Indian &gt; Grünfeld</p>
+    <p><strong style="color:var(--gold)">For Sicilian players:</strong> The King&#39;s Indian is the natural choice — same Dragon bishop setup, same aggressive counterattacking philosophy, same opposite-wing attack ideas.</p>
+  </div>
+
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Black vs 1.d4 · White Avoids c4</div>
+    <h2>When White Doesn't Play c4</h2>
+    <p>At 1500, a huge number of White players avoid the Queen's Gambit entirely and instead play systems that don't commit to c4 — the <strong style="color:var(--gold)">London System</strong>, <strong style="color:var(--gold)">Trompowsky</strong>, <strong style="color:var(--gold)">Colle</strong>, and <strong style="color:var(--gold)">Torre Attack</strong>. These are called "Anti-d4" or "Flank" systems. They are solid, require less theory from White, and can be very frustrating if Black doesn't know the correct plans.</p>
+  </div>
+
+  <div class="card">
+    <h3>The Big Picture</h3>
+    <p>White's goal in all these systems is the same: build a solid pawn structure (usually d4+e3 or d4+e4), develop all pieces safely, and avoid the sharp open-game theory that comes with 2.c4. At 1500, these systems are played constantly — the London System in particular is the most popular White opening at club level worldwide.</p>
+    <p><strong style="color:var(--gold)">Black's universal plan against all of them:</strong> Play ...d5 to fight for the centre, develop with ...Nf6 and ...e6 (or ...g6 for KID players), then use ...c5 as the main counterattack. The ...c5 break is the most important move in almost every anti-d4 system — it challenges d4, opens the c-file, and gives Black active counterplay. If White ever allows ...c5 to stand unchallenged, Black equalises easily.</p>
+    <p><strong style="color:var(--gold)">The key difference from the Queen's Gambit:</strong> Without c4, White's centre is less ambitious. This means Black doesn't need to worry about c4xd5 structural problems — but White's setup is also more solid and harder to crack open quickly. Patient, principled play wins.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="L">
+      <h4>London System (2.Bf4 or 2.Nf3+3.Bf4)</h4>
+      <p>White develops the bishop to f4 early, then plays e3, Bd3, Nbd2, and 0-0. A rigid but solid setup. Black's best plan: ...Bd6 to trade the f4 bishop (or threaten to), then ...c5 to challenge d4. Never let White build Bd3+Nf3+Ne5 without a fight.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Most common anti-d4 system at 1500 — you will face it every session</p>
+    </div>
+    <div class="principle" data-num="T">
+      <h4>Trompowsky Attack (2.Bg5)</h4>
+      <p>White pins the Nf6 immediately on move 2, before the pawn structure is set. The most aggressive of the anti-d4 systems. Black can accept the bishop pair with 2...Ne4 or play solid with 2...e6. Understanding the ...h6 forcing move is key.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Aggressive and unbalanced — White wants to complicate</p>
+    </div>
+    <div class="principle" data-num="C">
+      <h4>Colle System (2.Nf3 Nf6 3.e3)</h4>
+      <p>White builds d4+e3+Bd3+0-0 — a coiled spring. White often sacrifices on h7 with Bxh7+ after castling. Black's antidote: ...c5 early to disrupt the structure before White finishes the setup. The ...Bf5 or ...Bg4 development stops the Bd3 battery.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Dangerous if Black plays passively — active play is essential</p>
+    </div>
+    <div class="principle" data-num="To">
+      <h4>Torre Attack (2.Nf3 Nf6 3.Bg5)</h4>
+      <p>White pins the Nf6 with Bg5 after Nf3, similar to Trompowsky but a move later. The Torre is more positional — White will play e3, Nbd2, and build a solid centre. Black's ...c5 break disrupts White's plans and is the main equalising weapon.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Solid but passive — ...c5 kills White's initiative</p>
+    </div>
+    <div class="principle" data-num="BDG">
+      <h4>Blackmar-Diemer Gambit (1.d4 d5 2.e4)</h4>
+      <p>White sacrifices a pawn with 2.e4 dxe4 3.Nc3 Nf6 4.f3, seeking a huge development lead and kingside attack. One of the most aggressive 1.d4 systems at club level. Black's antidote is the Euwe Defence (4...exf3 5.Nxf3 e6) — accept the gambit, return the pawn at the right moment, and neutralise White's attack.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Very dangerous against unprepared players — know the Euwe Defence</p>
+    </div>
+    <div class="principle" data-num="V">
+      <h4>Richter-Veresov (1.d4 Nf6 2.Nc3 d5 3.Bg5)</h4>
+      <p>White skips Nf3 and plays Nc3 first, then pins with Bg5. The Veresov is aggressive — White often plays f3 and e4, launching a central pawn storm. Black's most reliable response is the solid ...Nbd7 setup with ...c6 and ...e5 to fight back in the centre.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Irregular but dangerous — central counterplay is the antidote</p>
+    </div>
+    <div class="principle" data-num="BA">
+      <h4>Barry Attack (1.d4 Nf6 2.Nf3 g6 3.Nc3 d5 4.Bf4)</h4>
+      <p>A system specifically aimed at KID players who answer 1.d4 with 1...Nf6 2...g6. Instead of allowing the King's Indian, White plays 3.Nc3 and 4.Bf4, forcing Black out of KID territory. Black's answer: 4...Bg7 5.e3 0-0 and then ...c6 + ...Nbd7, steering toward a solid London-type structure.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Specifically punishes KID players — know the ...c6/...Nbd7 setup</p>
+    </div>
+  </div>
+
+  <div id="bw-vs-london"></div>
+  <div id="bw-vs-tromp"></div>
+  <div id="bw-vs-colle"></div>
+  <div id="bw-vs-torre"></div>
+  <div id="bw-vs-bdg"></div>
+  <div id="bw-vs-veresov"></div>
+  <div id="bw-vs-barry"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Universal Black Rules Against All These Systems</h3>
+    <p><strong style="color:var(--gold)">1. Play ...c5 as soon as possible.</strong> In every anti-d4 system, ...c5 is Black's most important move. It challenges d4, opens the c-file, and equalises immediately. If White responds dxc5, Black recaptures and has an active position. If White ignores it, the d4 pawn is under permanent pressure.</p>
+    <p><strong style="color:var(--gold)">2. Don't mirror White's structure.</strong> Against the London especially, many Black players simply copy White's development and end up in a passive, symmetrical position with no counterplay. Be aggressive: ...Bd6 to trade the Bf4, ...c5 to hit d4, and ...Nc6 to add pressure.</p>
+    <p><strong style="color:var(--gold)">3. The ...Bf5 system vs the London.</strong> Playing ...d5, ...Nf6, ...e6, and ...Bf5 is Black's most principled response to the London. It mirrors White's bishop development and fights for the c2-h7 diagonal directly.</p>
+    <p><strong style="color:var(--gold)">4. Against the Trompowsky, ...e6 is solid.</strong> After 1.d4 Nf6 2.Bg5, play 2...e6 and if 3.e4 h6 4.Bxf6 Qxf6 — Black has the bishop pair and a solid position. Don't be afraid of trading the knight for the bishop early.</p>
+  </div>
+</div>
+<div id="vsKID" class="section">
+  <div class="section-header">
+    <div class="section-label">Black vs 1.d4 · Hypermodern</div>
+    <h2>The King&#39;s Indian Defence</h2>
+    <p>Black&#39;s most uncompromising reply to 1.d4. Allow White to build a massive centre with d4+e4+c4, fianchetto the bishop on g7, castle, then launch a ferocious kingside attack. The Dragon bishop on g7 and the ...e5+...f5 break are the soul of this defence.</p>
+  </div>
+
+  <div class="card">
+    <h3>The KID Philosophy</h3>
+    <p>The King&#39;s Indian is a fighting defence favoured by Kasparov, Fischer, Bronstein, and countless world champions. Black doesn&#39;t challenge the centre early — instead, Black lets White overextend, then attacks it. The position becomes two opposite-wing attacks: Black storms the kingside, White attacks the queenside. It is a race — the most exciting chess imaginable.</p>
+    <p><strong style="color:var(--gold)">The key moves:</strong> ...g6, ...Bg7, ...d6, ...0-0, ...e5, then ...f5. These 6 moves are the heart of the King&#39;s Indian in almost every variation.</p>
+  </div>
+
+  <div id="bw-kid-classical"></div>
+  <div id="bw-kid-saemisch"></div>
+  <div id="bw-kid-fourpawns"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Common Mistakes in the KID</h3>
+    <p><strong style="color:var(--gold)">1. Playing ...e5 too late.</strong> If White gets f4 in before you play ...e5, the position becomes very difficult. ...e5 must come before White plays f4 — always.</p>
+    <p><strong style="color:var(--gold)">2. Forgetting the queenside.</strong> After d5 closes the centre, White attacks on the queenside with c5, b4. You must counterattack on the kingside immediately — not defend on the queenside.</p>
+    <p><strong style="color:var(--gold)">3. Passivity after ...f5.</strong> Once you play ...f5, commit fully. Play ...f4, ...g5, ...h5 and go for the king. Half-measures lose.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-top:8px;">
+    <div class="principle" data-num="C">
+      <h4>Classical Variation</h4>
+      <p>White plays 6.Be2 — solid and positional. Black plays ...e5, ...Nc6, and after d5, launches the f5 kingside attack. The most theoretically important KID line.</p>
+    </div>
+    <div class="principle" data-num="S">
+      <h4>Saemisch Variation</h4>
+      <p>White plays 5.f3 — preparing e4-Be3-Qd2-0-0-0 for a queenside castle and kingside attack. Black responds with ...e5, ...c5, queenside castling is a thematic counter.</p>
+    </div>
+    <div class="principle" data-num="4">
+      <h4>Four Pawns Attack</h4>
+      <p>White plays 5.f4 — building an even bigger centre. Black breaks with ...e5! immediately. After fxe5 dxe5, the centre dissolves and Black has active piece play.</p>
+    </div>
+  </div>
+
+</div>
+<div id="vsQID" class="section">
+  <div class="section-header">
+    <div class="section-label">Black vs 1.d4 · Solid</div>
+    <h2>The Queen&#39;s Indian Defence</h2>
+    <p>Black&#39;s most elegant and solid response to 1.d4 Nf6 2.c4 e6 3.Nf3 — when White avoids 3.Nc3. Black plays ...b6 and fianchettoes the bishop on b7, controlling the centre from the flank. A favourite of Karpov, Kramnik, and positional masters everywhere.</p>
+  </div>
+
+  <div class="card">
+    <h3>The QID Philosophy</h3>
+    <p>The Queen&#39;s Indian arises specifically when White plays 3.Nf3 instead of 3.Nc3. Black plays 3...b6 to prevent White from occupying e4 uncontested — the Bb7 will control the e4 square from the long diagonal. It is a hypermodern defence: control the centre with pieces and bishops rather than pawns.</p>
+    <p><strong style="color:var(--gold)">The key idea:</strong> The Bb7 on the b7-g2 diagonal puts permanent pressure on White&#39;s centre. If White ever plays e4, the bishop and ...d5 challenge it directly. Black aims for a solid, equal position and outplays White in the long game.</p>
+  </div>
+
+  <div id="bw-qid-classical"></div>
+  <div id="bw-qid-petrosian"></div>
+  <div id="bw-qid-fianchetto"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Why White Avoids the QID</h3>
+    <p><strong style="color:var(--gold)">The Petrosian System (4.a3)</strong> is White&#39;s most aggressive way to avoid the QID — by preventing ...Bb4 and preparing e4. This leads to sharp play where Black must know the correct response.</p>
+    <p><strong style="color:var(--gold)">The Fianchetto (4.g3)</strong> leads to a battle of bishops: White&#39;s Bg2 vs Black&#39;s Bb7 on parallel diagonals. Whoever controls the long diagonal wins the positional battle.</p>
+    <p><strong style="color:var(--gold)">The Classical (4.e3)</strong> is solid and positional. Black easily equalises with ...d5 and ...c5 to challenge the centre.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-top:8px;">
+    <div class="principle" data-num="C">
+      <h4>Classical (4.e3)</h4>
+      <p>White plays solidly. Black plays ...d5 and ...c5 to challenge the centre directly. The resulting IQP or symmetrical positions favour Black&#39;s long-term piece activity.</p>
+    </div>
+    <div class="principle" data-num="P">
+      <h4>Petrosian (4.a3)</h4>
+      <p>White prevents ...Bb4 and plans e4. Black plays ...d5 to fight for the centre. Sharp and theoretical — White gets space, Black gets counterplay after ...dxe4 or ...d4.</p>
+    </div>
+    <div class="principle" data-num="F">
+      <h4>Fianchetto (4.g3)</h4>
+      <p>White mirrors with g3+Bg2. The battle is on the long diagonal: Bb7 vs Bg2. Black plays ...d5 and ...c5 to dissolve the centre and use active piece play.</p>
+    </div>
+  </div>
+
+</div>
+<div id="openings" class="section">
+  <div class="section-header">
+    <div class="section-label">Opening Theory</div>
+    <h2>The Sicilian Defence</h2>
+    <p>The most complex and imbalanced response to 1.e4. Knowing <em>why</em> you play each move matters more than memorising 15 moves of theory. Use the boards below to step through each variation.</p>
+  </div>
+  <div class="card">
+    <h3>The Core Idea</h3>
+    <p>After <strong style="color:var(--gold);font-family:'IBM Plex Mono',monospace">1.e4 c5</strong>, Black immediately fights for the centre without mirroring White. Black gets a semi-open c-file, queenside counterplay, and dynamic piece play — at the cost of giving White space and often the initiative.</p>
+    <p>As Black: castle kingside, attack on the queenside with ...a5-a4 or ...b5-b4, and use the half-open c-file for rook pressure. White typically attacks on the kingside. Opposite-wing attacks are the Sicilian's soul.</p>
+  </div>
+  <div id="bw-najdorf"></div>
+  <div id="bw-dragon"></div>
+  <div id="bw-schev"></div>
+
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Anti-Sicilian · 2.Bc4</div>
+    <h2>When White Plays 2.Bc4</h2>
+    <p>A common Anti-Sicilian weapon at club level. White avoids the Open Sicilian entirely, develops the bishop aggressively to c4 pointing at f7, and keeps the tension. It is not dangerous if Black responds correctly — but you need to know the two main Black setups.</p>
+  </div>
+  <div class="card">
+    <h3>Why White Plays 2.Bc4</h3>
+    <p>White sidesteps all Sicilian theory (no 2.Nf3 3.d4) and instead mimics Italian Game ideas: Bc4 eyes f7, Nf3 develops naturally, and White can follow up with d3 for a solid setup or try d4 at a later moment. At 1500 level this catches many Sicilian players off guard.</p>
+    <p><strong style="color:var(--gold)">The f7 target.</strong> The bishop on c4 always stares at f7. This means Black must be careful about early knight moves that let White play Ng5 or Bxf7+. The key principle: develop solidly, do not push pawns recklessly near f7, and challenge the centre with ...d5 at the right moment.</p>
+    <p><strong style="color:var(--gold)">Two main Black responses:</strong> <strong>...e6</strong> — solid, controls d5, prepares ...d5 push; or <strong>...g6</strong> — Dragon-type fianchetto, the Bg7 fights back along the long diagonal and offsets Bc4's pressure.</p>
+  </div>
+  <div id="bw-bc4-e6"></div>
+  <div id="bw-bc4-g6"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Playing the Sicilian as White</h3>
+    <p><strong style="color:var(--gold)">Alapin (2.c3):</strong> Solid — prepares d4 without allowing cxd4 Nxd4. Leads to IQP positions. Easy to learn, unpleasant for unprepared opponents.</p>
+    <p><strong style="color:var(--gold)">Grand Prix Attack (2.Nc3 + f4):</strong> Aggressive kingside play. Very dangerous at club level.</p>
+    <p><strong style="color:var(--gold)">Closed Sicilian (2.Nc3 + g3):</strong> Positional fianchetto. Avoids all Sicilian theory, slow kingside pressure.</p>
+  </div>
+</div>
+<div id="counters" class="section">
+  <div class="section-header">
+    <div class="section-label">Anti-Sicilian Systems</div>
+    <h2>Fighting White&#39;s Counters to the Sicilian</h2>
+    <p>When you play 1...c5, White doesn&#39;t have to enter the Open Sicilian. These four Anti-Sicilian systems are extremely common at club level — each one tries to sidestep your preparation. Here&#39;s what they are, why White plays them, and how to fight back.</p>
+  </div>
+
+  <div class="card">
+    <h3>The Big Picture</h3>
+    <p>White&#39;s Anti-Sicilian systems all share the same goal: avoid the sharp Open Sicilian (2.Nf3 + 3.d4) and reach a position where your Sicilian preparation is useless. Your job is to understand the <em>structure</em> each system creates, not just memorise moves.</p>
+    <p><strong style="color:var(--gold)">Good news:</strong> Most Anti-Sicilian players at 1500 know only the first 4-5 moves. If you understand the key ideas, you will outplay them in the middlegame.</p>
+  </div>
+
+  <div id="bw-alapin"></div>
+  <div id="bw-grandprix"></div>
+  <div id="bw-morra"></div>
+  <div id="bw-closed"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>General Principles vs Anti-Sicilian Systems</h3>
+    <p><strong style="color:var(--gold)">1. Control d5.</strong> In every Anti-Sicilian, the d5 square is your central anchor. Place a knight or push ...d5 when the timing is right.</p>
+    <p><strong style="color:var(--gold)">2. Don&#39;t over-react.</strong> Anti-Sicilian systems are not dangerous if you develop normally. Develop pieces, castle, then look for counterplay.</p>
+    <p><strong style="color:var(--gold)">3. Use the c-file.</strong> After ...cxd4 or ...cxc3, your c-file is semi-open. Double rooks on it later in the game.</p>
+    <p><strong style="color:var(--gold)">4. Patience wins.</strong> White gives up the Open Sicilian because they are afraid of your theory. Play solid chess and let the position speak.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-top:8px;">
+    <div class="principle" data-num="A">
+      <h4>vs Alapin (2.c3)</h4>
+      <p>Play ...d5 immediately or develop with ...Nf6/...e6. You equalise easily. Target: IQP positions favour you long-term.</p>
+    </div>
+    <div class="principle" data-num="G">
+      <h4>vs Grand Prix (f4)</h4>
+      <p>Fianchetto with ...g6 and ...Bg7, then counter with ...d5. The Dragon bishop neutralises the f4 attack.</p>
+    </div>
+    <div class="principle" data-num="M">
+      <h4>vs Smith-Morra</h4>
+      <p>Accept or decline. If accepted: use the extra pawn&#39;s space, develop solidly, neutralise the initiative. White runs out of steam.</p>
+    </div>
+    <div class="principle" data-num="C">
+      <h4>vs Closed Sicilian</h4>
+      <p>Attack on the queenside with ...a5, ...b5, ...b4. The Closed Sicilian gives you queenside space for free — use it!</p>
+    </div>
+  </div>
+</div>
+<div id="vsQG" class="section">
+  <div class="section-header">
+    <div class="section-label">Black vs 1.d4 2.c4 · Queen's Gambit</div>
+    <h2>Fighting the Queen's Gambit</h2>
+    <p>After <strong style="color:var(--gold);font-family:'IBM Plex Mono',monospace">1.d4 d5 2.c4</strong>, White offers the Queen's Gambit. Unlike the King's Gambit, it is not really a sacrifice — White can almost always recapture the pawn if Black takes. But the key question is: how does Black fight for the centre, develop actively, and avoid a passive squeeze?</p>
+  </div>
+
+  <div class="card">
+    <h3>The Queen's Gambit — What White Wants</h3>
+    <p>White's plan is simple and powerful: control the centre with pawns on c4 and d4, develop the pieces to active squares, and slowly squeeze Black with a space advantage. If Black plays passively, White's pieces flood in and Black ends up defending for the whole game with no counterplay.</p>
+    <p><strong style="color:var(--gold)">The critical question Black must answer:</strong> Do you accept (2...dxc4) and fight to keep the extra pawn while White gets a centre, or do you decline and try to maintain central tension with 2...e6, 2...c6, or 2...c5?</p>
+    <p><strong style="color:var(--gold)">The universal antidote:</strong> Every Black defence to the QG shares the same goals — challenge the c4 or d4 pawn, develop the light-squared bishop before playing ...e6 (the hardest problem in QG positions), and fight for the ...e5 or ...c5 central break. The bishop on c8 that gets trapped behind the e6 pawn is the defining problem of most QG defences.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="★">
+      <h4>Queen's Gambit Declined (2...e6)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★★☆☆ — The most solid choice. Reliable and positional. The Lasker variation gives Black easy equality and a comfortable game.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: solid, positional players who want a clear structure</p>
+    </div>
+    <div class="principle" data-num="★">
+      <h4>Slav Defence (2...c6)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★★☆☆ — Reinforces d5 without blocking the c8 bishop. After 4...dxc4 and ...Bf5, Black solves the main QG problem immediately.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: players who want activity and to avoid IQP positions</p>
+    </div>
+    <div class="principle" data-num="★">
+      <h4>Queen's Gambit Accepted (2...dxc4)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★★★☆ — Black takes the pawn and fights to keep it or counterattacks with ...e5. White gets a big centre but Black gets free development.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: tactical, counterattacking players who like dynamic positions</p>
+    </div>
+    <div class="principle" data-num="★">
+      <h4>Tarrasch Defence (2...e6 3...c5)</h4>
+      <p><strong style="color:var(--gold)">Difficulty:</strong> ★★★★☆ — Active and double-edged. Black gets an IQP but rich piece play. Used by Kasparov and Spassky at the highest level.</p>
+      <p style="margin-top:8px;font-size:12px;color:rgba(245,240,232,.5);">Best for: dynamic players who accept structural risk for activity</p>
+    </div>
+  </div>
+
+  <div id="bw-qgd-lasker"></div>
+
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Queen's Gambit · Slav Defence</div>
+    <h2>The Slav: Solving the Bishop Problem</h2>
+    <p>By playing 2...c6 instead of 2...e6, Black reinforces d5 without blocking the light-squared bishop. This is the core insight of the Slav — Black keeps the option to play ...Bf5 before closing the diagonal with ...e6.</p>
+  </div>
+
+  <div id="bw-qgd-slav"></div>
+
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Queen's Gambit · Accepted</div>
+    <h2>QGA: Take the Pawn and Fight</h2>
+    <p>Black accepts the gambit with 2...dxc4 and tries to keep the extra pawn, or uses the extra tempo to develop fast with ...e5. White gets a large pawn centre with e4, but Black gets free development. A sharp, principled choice.</p>
+  </div>
+
+  <div id="bw-qga-black"></div>
+
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Queen's Gambit · Tarrasch Defence</div>
+    <h2>The Tarrasch: IQP for Activity</h2>
+    <p>After 2...e6 3.Nc3 c5, Black immediately counterattacks the centre. After the pawn exchanges, Black accepts an isolated queen's pawn (IQP) on d5 in return for dynamic piece play, open lines, and active bishops. Kasparov's weapon of choice.</p>
+  </div>
+
+  <div id="bw-qgd-tarrasch"></div>
+
+  <div class="card" style="margin-top:24px;">
+    <h3>Which Defence Should You Play?</h3>
+    <p><strong style="color:var(--gold)">If you want simplicity:</strong> The QGD Lasker is your answer. After the Lasker variation (...Nd5 ...Nxc3 ...e5), Black liquidates the tension and reaches a comfortable, equal position. Very few things can go wrong.</p>
+    <p><strong style="color:var(--gold)">If you want activity without risk:</strong> The Slav. Playing ...c6 and ...Bf5 solves the bishop problem elegantly and leads to positions where Black is comfortable and active. The Slav is used at every level from club chess to World Championships.</p>
+    <p><strong style="color:var(--gold)">If you want counterplay:</strong> The QGA. Taking the pawn forces White to spend time recovering it with e4, and Black gets free development in return. After ...Bb4+, Black has active pieces and no weaknesses.</p>
+    <p><strong style="color:var(--gold)">If you want sharp, unbalanced play:</strong> The Tarrasch. You voluntarily accept an IQP for rich piece activity — the same structure as the QGA-type positions in the Theory page. This is a serious weapon if you understand IQP play.</p>
+  </div>
+</div>
+<div id="middlegame" class="section">
+  <div class="section-header">
+    <div class="section-label">Middlegame Theory</div>
+    <h2>Strategy & Planning</h2>
+    <p>At 1500, the biggest gains come from understanding <em>why</em> moves work — pawn breaks, piece placement, and forming a coherent plan.</p>
+  </div>
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--light-gold);margin-bottom:16px;">The Five Questions</h3>
+  <div class="principles-grid">
+    <div class="principle" data-num="1"><h4>Is my king safe?</h4><p>Check for back-rank weaknesses and exposed kings before anything else. Safety first, always.</p></div>
+    <div class="principle" data-num="2"><h4>Material count?</h4><p>Are any pieces hanging? Any advantageous trades available? Count before calculating.</p></div>
+    <div class="principle" data-num="3"><h4>Opponent's threat?</h4><p>Always ask "what is my opponent threatening?" before deciding your move. The single biggest improvement at 1500.</p></div>
+    <div class="principle" data-num="4"><h4>Where is the imbalance?</h4><p>Bishop pair, open file, pawn structure, space — identify what's unequal and exploit it.</p></div>
+    <div class="principle" data-num="5"><h4>What's the plan?</h4><p>Improve the worst piece, create a pawn break, double rooks on the open file.</p></div>
+  </div>
+  <div id="bw-outpost"></div>
+  <div id="bw-break"></div>
+  <div id="bw-iqp"></div>
+  <div class="card">
+    <h3>Rooks — The Most Underused Piece at 1500</h3>
+    <p><strong style="color:var(--gold)">Open files:</strong> Place rooks on open or half-open files. Double them for maximum pressure.</p>
+    <p><strong style="color:var(--gold)">7th rank:</strong> A rook on the 7th rank attacks pawns and cuts off the king. Two rooks on the 7th are almost always winning.</p>
+    <p><strong style="color:var(--gold)">Activate early:</strong> In endgames, the rook should be ACTIVE — behind passed pawns, attacking pawns, cutting off the king.</p>
+  </div>
+</div>
+<div id="endgame" class="section">
+  <div class="section-header">
+    <div class="section-label">Endgame Theory</div>
+    <h2>Essential Endgames</h2>
+    <p>When you reach an endgame, knowing these fundamentals will win or save games every week. Start with the critical ones — use the boards to step through the techniques.</p>
+  </div>
+  <div id="bw-opp"></div>
+  <div id="bw-lucena"></div>
+  <div id="bw-philidor"></div>
+  <div class="endgame-category" style="margin-top:32px;">
+    <h3>King & Pawn Endgames</h3>
+    <div class="endgame-item"><div class="endgame-name">The Opposition</div><div class="endgame-desc">Kings facing each other with one square between. The side not to move holds it. See board above.</div><span class="priority p-critical">CRITICAL</span></div>
+    <div class="endgame-item"><div class="endgame-name">The Square Rule</div><div class="endgame-desc">Draw a diagonal square from pawn to promotion square. If the opposing king can step in, it catches the pawn.</div><span class="priority p-critical">CRITICAL</span></div>
+    <div class="endgame-item"><div class="endgame-name">Triangulation</div><div class="endgame-desc">Moving the king in a triangle to waste a tempo and transfer opposition to the opponent.</div><span class="priority p-high">HIGH</span></div>
+    <div class="endgame-item"><div class="endgame-name">Outside Passed Pawn</div><div class="endgame-desc">A distant passed pawn draws the enemy king away, allowing your king to take the remaining pawns.</div><span class="priority p-high">HIGH</span></div>
+  </div>
+  <div class="endgame-category">
+    <h3>Rook Endgames</h3>
+    <div class="endgame-item"><div class="endgame-name">Lucena Position</div><div class="endgame-desc">Rook and King vs lone King — the fundamental mating pattern. See interactive board above.</div><span class="priority p-critical">CRITICAL</span></div>
+    <div class="endgame-item"><div class="endgame-name">Philidor Position</div><div class="endgame-desc">Rook behind the passed pawn — the most important rook endgame placement principle. See interactive board above.</div><span class="priority p-critical">CRITICAL</span></div>
+    <div class="endgame-item"><div class="endgame-name">Active vs Passive Rook</div><div class="endgame-desc">"A rook behind its pawn pushes; in front it blockades." Keep your rook active — always.</div><span class="priority p-critical">CRITICAL</span></div>
+  </div>
+  <div class="endgame-category">
+    <h3>Minor Piece Endgames</h3>
+    <div class="endgame-item"><div class="endgame-name">Good vs Bad Bishop</div><div class="endgame-desc">Your bishop is "bad" if your pawns sit on the same colour squares. Trade bad bishops for good ones.</div><span class="priority p-high">HIGH</span></div>
+    <div class="endgame-item"><div class="endgame-name">Knight vs Bishop</div><div class="endgame-desc">Knights better in closed positions; bishops excel in open positions with pawns on both wings.</div><span class="priority p-high">HIGH</span></div>
+    <div class="endgame-item"><div class="endgame-name">Wrong Rook's Pawn</div><div class="endgame-desc">Bishop + rook pawn on the wrong colour can draw even a piece up. Know this to avoid trapped wins.</div><span class="priority p-medium">MEDIUM</span></div>
+  </div>
+  <div class="card">
+    <h3>The Most Important Endgame Principle</h3>
+    <p><strong style="color:var(--gold)">Activate your king immediately.</strong> In the endgame, the king is a powerful fighting piece. The most common 1500-level endgame mistake is keeping the king in the corner. March it toward the centre the moment queens come off.</p>
+  </div>
+</div>
+<div id="tactics" class="section">
+  <div class="section-header">
+    <div class="section-label">Pattern Recognition</div>
+    <h2>Tactical Motifs</h2>
+    <p>Tactics win more games at 1500 than any other skill. You don't need to calculate 10 moves deep — you need to recognise patterns instantly.</p>
+  </div>
+  <div class="tactic-box">
+    <div class="tactic-type">Core Practice Rule</div>
+    <p>Do 10-20 tactics puzzles every day. Focus on puzzles rated slightly above your level (1600-1800 on chess.com). The goal is pattern recognition, not brute-force calculation. Step through the example boards below to train these patterns.</p>
+  </div>
+  <div id="bw-fork"></div>
+  <div id="bw-pin"></div>
+  <div id="bw-backrank"></div>
+  <div class="principles-grid" style="margin-top:24px;">
+    <div class="principle" data-num="♞"><h4>Fork</h4><p>One piece attacks two or more enemy pieces. Always ask: can my knight fork any two pieces from here?</p></div>
+    <div class="principle" data-num="♝"><h4>Pin</h4><p>A piece is pinned if moving it exposes a more valuable piece. Pile on attackers — the pinned piece cannot run.</p></div>
+    <div class="principle" data-num="♜"><h4>Skewer</h4><p>Attack a valuable piece; it moves; the piece behind is captured. Common on open diagonals and files.</p></div>
+    <div class="principle" data-num="♛"><h4>Discovered Attack</h4><p>Move one piece to reveal an attack by another behind it. Especially powerful when the moving piece also threatens.</p></div>
+    <div class="principle" data-num="♚"><h4>Back Rank Mate</h4><p>Rook or queen mates when the king is trapped. See board above — always create a "luft" escape square.</p></div>
+    <div class="principle" data-num="★"><h4>Zwischenzug</h4><p>"Intermediate move" — before recapturing, ask: is there a stronger forcing move first?</p></div>
+  </div>
+  <div class="card">
+    <h3>Blunder Check — Do This Every Move</h3>
+    <p>Before you play any move, ask: "Does this hang a piece? Does it allow a check, fork, or back-rank mate?" 5 seconds of double-checking will eliminate half your losses at 1500.</p>
+  </div>
+</div>
+<div id="puzzles" class="section">
+  <div class="section-header">
+    <div class="section-label">Tactical Training</div>
+    <h2>Daily Chess Puzzles</h2>
+    <p>Three puzzles — one at each difficulty level. Use the boards to step through the solution move by move. Click <strong style="color:var(--gold)">New Puzzles</strong> to get a fresh set whenever you want.</p>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
+    <button onclick="refreshPuzzles()" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.5);color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:12px 24px;cursor:pointer;transition:all .2s;">⟳ New Puzzles</button>
+    <span id="puzzle-seed-label" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(245,240,232,.3);letter-spacing:2px;"></span>
+  </div>
+
+  <div class="card" style="margin-bottom:28px;">
+    <h3>How to Use These Puzzles</h3>
+    <p>Each puzzle shows the starting position. Try to find the winning move before clicking the arrow. The step-by-step board shows the full solution — White to move unless noted. The rating is approximate Lichess puzzle difficulty.</p>
+  </div>
+
+  <div id="puzzle-tier-1600">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;background:rgba(39,162,101,.2);color:#52be80;border:1px solid rgba(39,162,101,.4);padding:4px 12px;">~1600</span>
+      <span id="p1600-title" style="font-family:'Playfair Display',serif;font-size:18px;color:var(--light-gold);"></span>
+    </div>
+    <div id="bw-p1600"></div>
+  </div>
+
+  <div id="puzzle-tier-1900" style="margin-top:32px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;background:rgba(201,168,76,.2);color:var(--gold);border:1px solid rgba(201,168,76,.4);padding:4px 12px;">~1900</span>
+      <span id="p1900-title" style="font-family:'Playfair Display',serif;font-size:18px;color:var(--light-gold);"></span>
+    </div>
+    <div id="bw-p1900"></div>
+  </div>
+
+  <div id="puzzle-tier-2100" style="margin-top:32px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;background:rgba(192,57,43,.2);color:#e74c3c;border:1px solid rgba(192,57,43,.4);padding:4px 12px;">~2100</span>
+      <span id="p2100-title" style="font-family:'Playfair Display',serif;font-size:18px;color:var(--light-gold);"></span>
+    </div>
+    <div id="bw-p2100"></div>
+  </div>
+</div>
+<div id="theory" class="section">
+  <div class="section-header">
+    <div class="section-label">Deep Study · Chess Concepts</div>
+    <h2>Theory: Understanding Chess at a Deeper Level</h2>
+    <p>Opening moves are just the beginning. The players who improve fastest are those who understand <em>why</em> positions work the way they do — the structural forces, strategic principles, and prophylactic ideas that explain every good move. This page goes deeper than tips and tricks.</p>
+  </div>
+
+  <!-- PAWN STRUCTURES -->
+  <div class="card">
+    <h3>Pawn Structures</h3>
+    <p>Pawn structure is the skeleton of every chess position. Unlike pieces, pawns cannot move backward — so every pawn move creates permanent consequences. The three most important structures at club level are the <strong style="color:var(--gold)">Isolated Queen's Pawn (IQP)</strong>, <strong style="color:var(--gold)">Hanging Pawns</strong>, and <strong style="color:var(--gold)">Pawn Majorities</strong>. Understanding each one tells you what both sides should be doing before you even look at the pieces.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="IQP">
+      <h4>The Isolated Queen's Pawn</h4>
+      <p>A pawn on d4 with no pawns on c4 or e4 to support it. The IQP gives White space, active pieces, and open e- and c-files. But it is a permanent weakness that Black can target by blockading it with a piece on d5.</p>
+      <p><strong style="color:var(--gold)">With the IQP:</strong> Attack. Push d5 as a pawn sacrifice to open lines. Put a knight on e5. Use Bd3+Qe2 battery aiming at h7. The IQP position must be played dynamically — passive play lets Black blockade and win the endgame.</p>
+      <p><strong style="color:var(--gold)">Against the IQP:</strong> Trade pieces. The IQP gets weaker as the endgame approaches. Put a knight on d5 to blockade it. Keep the position closed so White can't advance d5.</p>
+    </div>
+    <div class="principle" data-num="HP">
+      <h4>Hanging Pawns</h4>
+      <p>Two adjacent central pawns (typically on c5 and d5, or c4 and d4) with no pawns on adjacent files to support them. They "hang" in space — mobile and powerful, but potentially weak if they stop advancing.</p>
+      <p><strong style="color:var(--gold)">With hanging pawns:</strong> Keep them moving. Advance c5-c4 or d5-d4 to gain space and open lines. The hanging pawns are strongest when threatening to advance — so make that threat as often as possible.</p>
+      <p><strong style="color:var(--gold)">Against hanging pawns:</strong> Attack the base. Put pressure on c5 or d5 to force them backward. Once they stop moving, they become isolated pawns — easy targets in the endgame.</p>
+    </div>
+    <div class="principle" data-num="PM">
+      <h4>Pawn Majorities</h4>
+      <p>A majority is having more pawns on one side of the board than your opponent. A queenside majority (e.g. 3 pawns vs 2) can create a passed pawn. A kingside majority can support a direct attack.</p>
+      <p><strong style="color:var(--gold)">Healthy majority:</strong> Connected pawns that can advance together — a4, b4, c4 rolling forward. One pawn breaks through while others support.</p>
+      <p><strong style="color:var(--gold)">Crippled majority:</strong> A majority with doubled pawns (e.g. c3, c4, d4 vs b5, c5) cannot create a passed pawn. This is why doubled pawns are a real weakness — they neutralise your numerical advantage on that wing.</p>
+    </div>
+  </div>
+
+  <div id="bw-t-iqp"></div>
+  <div id="bw-t-hanging"></div>
+
+  <!-- INITIATIVE & TEMPO -->
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Theory · Dynamics</div>
+    <h2>The Initiative and Tempo</h2>
+    <p>The initiative is the power to <em>threaten</em> — forcing your opponent to respond rather than pursue their own plan. Understanding the initiative explains why some positions win even when they look equal on the material count.</p>
+  </div>
+
+  <div class="card">
+    <h3>What Is the Initiative?</h3>
+    <p>A player with the initiative is making threats that demand responses. Every move your opponent spends reacting to your threats is a move they aren't using to improve their position. The initiative is a form of time advantage — and like all advantages, it must be converted before it evaporates.</p>
+    <p><strong style="color:var(--gold)">Tempo</strong> is a single unit of time — one move. Losing a tempo means wasting a move (moving the same piece twice, making a pointless waiting move). Gaining a tempo means forcing your opponent to waste a move reacting to your threat.</p>
+    <p><strong style="color:var(--gold)">The golden rule:</strong> Every forcing move (check, capture, or threat) that your opponent must respond to is a free tempo. Chain them together and you can build a decisive attack before your opponent has time to organise.</p>
+    <p><strong style="color:var(--gold)">When to give up the initiative:</strong> Sometimes it is correct to let go of the initiative in exchange for a lasting structural advantage — a better pawn structure, a stronger outpost, or a superior endgame. The Sicilian is built on this idea: Black lets White have the initiative in the opening, then converts their better structure in the middlegame.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="→">
+      <h4>Development Lead = Initiative</h4>
+      <p>In the opening, the player who develops faster almost always has the initiative. Every extra piece that is developed while the opponent's army sits on the back rank is a tempo advantage. This is why gambits work — you sacrifice a pawn to gain 2-3 tempos in development, and those tempos give you attacking chances worth more than the pawn.</p>
+    </div>
+    <div class="principle" data-num="⏱">
+      <h4>The Critical Tempo: When to Attack</h4>
+      <p>Attack when you have more pieces developed than your opponent. If your opponent has an undeveloped piece or an uncastled king, that is the signal to open the position and attack — even at the cost of material. A queen and two pieces in an open position beat a queen and four pieces if the four can't reach the fight.</p>
+    </div>
+    <div class="principle" data-num="∞">
+      <h4>Compensation and Dynamic Equality</h4>
+      <p>Not all advantages are material. A pawn can be equal in value to: the bishop pair, a better pawn structure, a development lead of 3+ tempos, an open file for a rook, or a permanent weak square in your opponent's position. "Equal compensation" means neither side has a definitive advantage — the game is dynamically balanced even if the material count differs.</p>
+    </div>
+  </div>
+
+  <!-- PROPHYLAXIS -->
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Theory · Petrosian's Concept</div>
+    <h2>Prophylaxis</h2>
+    <p>Prophylaxis is the art of preventing your opponent's plan before it becomes dangerous. World Champion Tigran Petrosian elevated it to a chess philosophy: before making your own plan, ask what your opponent wants to do — then stop it.</p>
+  </div>
+
+  <div class="card">
+    <h3>Thinking Prophylactically</h3>
+    <p>Most players at 1500 think only about their own plans. They find a good move for themselves and play it. The result: they are constantly surprised by their opponent's counter-threats. Prophylaxis means adding one question to your thinking process: <em>"What is my opponent threatening right now, and in the next 2-3 moves?"</em></p>
+    <p><strong style="color:var(--gold)">The five prophylactic moves:</strong> Moves that prevent ...Ng4 (keeping a pawn on h3 or g3). Moves that stop ...d5 (keeping a knight or pawn controlling d5). Moves that prevent ...Bxh2+ tricks (checking the h2 pawn). Moves that stop back rank threats before they develop. Moves that prevent your opponent from doubling rooks on an open file.</p>
+    <p><strong style="color:var(--gold)">Prophylaxis vs passivity:</strong> Prophylaxis is not the same as passive defence. A prophylactic move simultaneously prevents the opponent's plan AND improves your own position. If a move only prevents without improving, it is usually too slow. The best prophylactic moves are dual-purpose: they stop something dangerous while also being the right positional move for your own plan.</p>
+    <p><strong style="color:var(--gold)">A useful shortcut:</strong> When you cannot find a clear plan, ask "what does my opponent most want to do right now?" Then prevent it. At 1500, most opponents telegraph their intentions clearly — learning to read and prevent them is one of the fastest ways to improve your defensive play without memorising lines.</p>
+  </div>
+
+  <div id="bw-t-prophylaxis"></div>
+
+  <!-- OPEN FILES & ROOK COORDINATION -->
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Theory · Rook Play</div>
+    <h2>Open Files and Rook Coordination</h2>
+    <p>Rooks are the most underused piece at club level. Most 1500 players develop their rooks to e1 or d1 and leave them there. But rooks need open files, coordination, and active targets to fulfil their potential. Mastering rook play is one of the highest-leverage improvements you can make.</p>
+  </div>
+
+  <div class="card">
+    <h3>The Hierarchy of Rook Placement</h3>
+    <p><strong style="color:var(--gold)">Open file &gt; Semi-open file &gt; Closed file.</strong> A rook on an open file (no pawns of either colour) controls the entire file and can penetrate to the 7th or 8th rank. A semi-open file (no pawns of your own colour, but opponent's pawn present) still gives the rook active play — it pressures the pawn. A rook on a closed file is nearly useless until the position opens.</p>
+    <p><strong style="color:var(--gold)">The 7th rank.</strong> A rook on the 7th rank is devastating — it attacks all of the opponent's unmoved pawns and cuts off the king. Two rooks on the 7th rank (the "pig" formation) is often decisive. Always be alert to rook penetration to the 7th rank — both as a weapon and as a danger to prevent.</p>
+    <p><strong style="color:var(--gold)">Rook coordination.</strong> Two rooks on the same open file (doubling rooks) control it completely, preventing the opponent's rook from entering. Two rooks on adjacent open files create a "rolling" attack. One rook on an open file + one rook on the 7th rank is the most powerful rook configuration in chess.</p>
+    <p><strong style="color:var(--gold)">The outpost rook.</strong> A rook on the 7th rank is attacking, but a rook on an outpost square — a file where your opponent cannot challenge it with their own rook — is a permanent piece of domination. To create this: open a file, penetrate, and make sure your opponent's rooks cannot reach that file to challenge.</p>
+  </div>
+
+  <div class="principles-grid" style="margin-bottom:8px;">
+    <div class="principle" data-num="📌">
+      <h4>Creating Open Files</h4>
+      <p>Open files don't appear by accident — you create them. The methods: pawn exchanges (push c4xd5 to open the c-file), sacrifices (give up a pawn to prise open a file next to the opponent's king), and pawn breaks (d5-d6 to open the d-file or e5-e6 to open the e-file). Always ask: which file do I want open? Then work backwards to find the pawn moves that open it.</p>
+    </div>
+    <div class="principle" data-num="🔁">
+      <h4>Rook vs Rook: Who Controls the File?</h4>
+      <p>When both sides have rooks on the same open file, control goes to whoever can <em>back up</em> their rook with more force. Double your rooks on the file. Place your queen behind them. If your opponent is contesting the file, advance your rook past theirs to the 7th rank — don't just stand and stare at each other. Activity beats passivity even on open files.</p>
+    </div>
+    <div class="principle" data-num="♟">
+      <h4>When to Trade Rooks</h4>
+      <p>Trade your active rook for the opponent's passive rook when: you are winning material and want to simplify, or the opponent's rook is their only active piece. Keep rooks when: you need attacking chances, the position is open, or you have a strong rook vs a weak one. Never trade your dominant rook on the 7th rank for a rook on the back rank — that is giving up your biggest advantage for nothing.</p>
+    </div>
+  </div>
+
+  <div id="bw-t-openfile"></div>
+
+  <!-- WEAK SQUARES & OUTPOSTS -->
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.15);margin:32px 0;">
+
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-label">Theory · Positional Mastery</div>
+    <h2>Weak Squares and Outposts</h2>
+    <p>A weak square is one that can no longer be defended by a pawn. An outpost is a weak square in your opponent's position that you can occupy with a piece. Together, these concepts explain some of the most powerful strategic ideas in chess — and most 1500 players barely think about them.</p>
+  </div>
+
+  <div class="card">
+    <h3>Understanding Square Weakness</h3>
+    <p>A square becomes weak the moment the pawn that could defend it advances past it. If your opponent plays ...f6, the e6 and g6 squares can never be defended by a Black pawn again — they are permanently weak. Any White piece that lands on e6 or g6 cannot be expelled by a pawn. That is an outpost.</p>
+    <p><strong style="color:var(--gold)">The most important weak squares:</strong> e5/e4 (created when the f-pawn advances), d5/d4 (created when the e-pawn advances or c-pawn is traded), f5/f4 (created when the g-pawn advances). These are the squares at the heart of the board — control them with pieces and you control the game.</p>
+    <p><strong style="color:var(--gold)">Knights love outposts. Bishops don't need them.</strong> A knight on an outpost is the most powerful piece on the board — it cannot be kicked, it controls surrounding squares, and it dominates. A bishop, by contrast, doesn't need an outpost because it operates from distance. This is the key to the bishop vs knight imbalance: in open positions bishops are better; in closed positions with outposts, knights are better.</p>
+    <p><strong style="color:var(--gold)">Creating outposts deliberately:</strong> To create an outpost, eliminate the pawn that defends the target square. If you want a knight on d5, trade or force away the Black pawn on c6 or e6. This is often worth a strategic concession — accepting an IQP, giving up the bishop pair — because a permanent piece outpost on d5 is a lasting advantage that can win games by itself.</p>
+    <p><strong style="color:var(--gold)">Colour complexes.</strong> When one player has traded their bishop on a certain colour, all the squares of that colour become weak. A "dark-square weakness" means every dark square in the position is a potential outpost for the opponent's dark-squared bishop or knight. Always think about which colour of squares you control after piece exchanges.</p>
+  </div>
+
+  <div id="bw-t-outpost"></div>
+
+</div>
+    </main>
+  </div><!-- #content -->
+</div><!-- #app -->
+
+<script src="chess-engine.js" defer></script>
+
+<script src="chess-ui.js" defer></script>
+</body>
+</html>

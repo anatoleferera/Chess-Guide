@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chess Mastery — 1500 to 1800</title>
+<meta name="description" content="Interactive chess guide with 62 annotated boards, 14 opening systems, puzzles, tactics and theory.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0e10;--surface:#161819;--surface2:#1e2022;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --gold:#c9a84c;--gold2:#e8d5a0;--gold-dim:rgba(201,168,76,.45);
+  --gold-glow:rgba(201,168,76,.1);--cream:#f0ebe2;
+  --muted:rgba(240,235,226,.55);--dim:rgba(240,235,226,.28);
+  --font-ui:'DM Sans',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-disp:'Playfair Display',Georgia,serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--cream);font-family:var(--font-ui);font-size:15px;line-height:1.7;overflow-x:hidden;}
+a{color:var(--gold);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* TOPBAR */
+#topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(13,14,16,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;z-index:100;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:32px;height:32px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--bg);}
+.logo-text{font-family:var(--font-disp);font-size:17px;font-weight:700;color:var(--cream);line-height:1;}
+.logo-text span{display:block;font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);font-weight:400;margin-top:2px;}
+.topbar-spacer{flex:1;}
+.topbar-cta{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;background:var(--gold);color:var(--bg);border:none;padding:8px 18px;cursor:pointer;text-decoration:none;font-weight:500;transition:opacity .2s;display:inline-block;}
+.topbar-cta:hover{opacity:.85;text-decoration:none;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:56px 24px 0;}
+.hero-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.hero-inner{position:relative;z-index:1;text-align:center;max-width:760px;padding:80px 0 100px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:6px 18px;margin-bottom:36px;opacity:0;animation:fadeUp .7s .1s forwards;}
+.hero-eyebrow::before{content:"♟";font-size:12px;}
+.hero-title{font-family:var(--font-disp);font-size:clamp(48px,8vw,96px);font-weight:900;line-height:.95;letter-spacing:-1px;margin-bottom:28px;opacity:0;animation:fadeUp .8s .22s forwards;}
+.hero-title .t1{display:block;background:linear-gradient(135deg,var(--gold2) 0%,var(--gold) 45%,var(--gold2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-title .t2{display:block;color:var(--muted);-webkit-text-fill-color:var(--muted);font-size:.48em;font-style:italic;letter-spacing:0;margin-top:10px;}
+.hero-sub{font-size:clamp(16px,2vw,19px);color:var(--muted);max-width:520px;margin:0 auto 44px;line-height:1.75;opacity:0;animation:fadeUp .8s .34s forwards;}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .46s forwards;}
+.btn-gold{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--bg);font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 32px;transition:all .2s;}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.25);text-decoration:none;}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--cream);font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 32px;border:1px solid var(--border2);transition:all .2s;}
+.btn-outline:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);transform:translateY(-2px);text-decoration:none;}
+
+/* STATS */
+.stats{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;justify-content:center;flex-wrap:wrap;}
+.stat{padding:28px 48px;text-align:center;border-right:1px solid var(--border);opacity:0;}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:var(--font-disp);font-size:40px;font-weight:900;color:var(--gold);line-height:1;display:block;}
+.stat-l{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:5px;display:block;}
+
+/* SECTIONS */
+.section-wrap{max-width:1080px;margin:0 auto;padding:80px 24px;}
+.eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px;}
+.sec-title{font-family:var(--font-disp);font-size:clamp(28px,4vw,48px);font-weight:900;line-height:1.1;margin-bottom:16px;color:var(--cream);}
+.sec-title em{color:var(--gold);font-style:italic;}
+.sec-body{font-size:16px;color:var(--muted);max-width:560px;line-height:1.8;}
+
+/* PREVIEW */
+.preview{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.preview .section-wrap{display:grid;grid-template-columns:auto 1fr;gap:64px;align-items:center;}
+.board-wrap{opacity:0;}
+.mini-board{display:grid;grid-template-columns:repeat(8,1fr);width:320px;height:320px;border:2px solid rgba(74,156,82,.6);box-shadow:0 0 0 1px rgba(0,0,0,.5),0 20px 60px rgba(0,0,0,.7);flex-shrink:0;}
+.sq{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.sq.l{background:#e8f0d8;}.sq.d{background:#6b8c4a;}
+.sq .wp{color:#fff;text-shadow:0 0 2px #000,1px 1px 2px #000;}
+.sq .bp{color:#111;text-shadow:0 0 3px rgba(255,255,255,.6);}
+.preview-text{opacity:0;}
+.feature-list{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:14px;}
+.feature-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;color:var(--muted);}
+.feature-list li::before{content:"♟";color:var(--gold);font-size:14px;flex-shrink:0;margin-top:3px;}
+
+/* GRID */
+.modules-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:20px;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.module{background:var(--surface);padding:24px;transition:background .2s;opacity:0;position:relative;overflow:hidden;}
+.module::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.module:hover{background:var(--surface2);}
+.module:hover::before{transform:scaleX(1);}
+.module.wide{grid-column:span 2;}
+.mod-icon{font-size:28px;margin-bottom:12px;display:block;}
+.mod-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:8px;display:block;}
+.mod-name{font-family:var(--font-disp);font-size:17px;font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.2;}
+.mod-desc{font-size:13px;color:var(--muted);line-height:1.65;}
+.mod-count{display:inline-block;margin-top:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--gold-dim);border:1px solid rgba(201,168,76,.2);padding:2px 8px;border-radius:2px;}
+
+/* PATH */
+.path-wrap{max-width:800px;margin:0 auto;padding:80px 24px;}
+.steps{margin-top:48px;display:flex;flex-direction:column;position:relative;}
+.steps::before{content:"";position:absolute;left:19px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(201,168,76,.35) 10%,rgba(201,168,76,.35) 90%,transparent);}
+.step{display:grid;grid-template-columns:40px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.05);opacity:0;}
+.step:last-child{border-bottom:none;}
+.step-n{width:40px;height:40px;border:1px solid rgba(201,168,76,.35);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;color:var(--gold);background:var(--bg);position:relative;z-index:1;flex-shrink:0;}
+.step h3{font-family:var(--font-disp);font-size:20px;font-weight:700;color:var(--cream);margin-bottom:6px;}
+.step p{font-size:14px;color:var(--muted);line-height:1.7;}
+
+/* QUOTE */
+.quote-wrap{text-align:center;padding:60px 24px;max-width:700px;margin:0 auto;opacity:0;}
+blockquote{font-family:var(--font-disp);font-size:clamp(20px,3vw,30px);font-style:italic;color:var(--cream);line-height:1.45;margin-bottom:20px;opacity:.9;}
+cite{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dim);font-style:normal;}
+
+/* CTA */
+.cta-section{background:var(--surface);border-top:1px solid var(--border);text-align:center;padding:80px 24px 100px;position:relative;overflow:hidden;}
+.cta-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.cta-section .sec-title{margin-bottom:12px;}
+.cta-section .sec-body{margin:0 auto 40px;text-align:center;}
+.free-note{margin-top:20px;font-family:var(--font-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);}
+
+/* FOOTER */
+footer{background:#09090a;border-top:1px solid var(--border);padding:32px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.footer-logo{display:flex;align-items:center;gap:8px;font-family:var(--font-disp);font-size:14px;color:var(--muted);}
+.footer-logo span{width:24px;height:24px;background:rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:13px;}
+footer p{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:16px;max-width:1080px;margin:0 auto;padding:0 24px;}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border);}
+.divider span{color:rgba(201,168,76,.3);font-size:18px;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  .preview .section-wrap{grid-template-columns:1fr;}
+  .mini-board{width:260px;height:260px;margin:0 auto;}
+  .sq{font-size:22px;}
+  .grid{grid-template-columns:1fr;}
+  .module.wide{grid-column:span 1;}
+}
+@media(max-width:600px){
+  .stat{padding:20px 28px;border-right:none;border-bottom:1px solid var(--border);}
+  .stat:last-child{border-bottom:none;}
+  .stats{flex-direction:column;}
+  .hero-actions{flex-direction:column;align-items:center;}
+  .btn-gold,.btn-outline{width:100%;max-width:300px;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <a href="https://anatoleferera.github.io/Chess-Guide/index.html" class="logo">
+    <div class="logo-icon">&#9823;</div>
+    <div class="logo-text">Chess Mastery<span>1500 &rarr; 1800</span></div>
+  </a>
+  <div class="topbar-spacer"></div>
+  <a href="https://anatoleferera.github.io/Chess-Guide/chess-guide.html" class="topbar-cta">Open Guide &rarr;</a>
+</div>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Interactive Chess Guide &middot; chess.com ~1500 Rapid</div>
+    <h1 class="hero-title">
+      <span class="t1">Chess Mastery</span>
+      <span class="t2">From 1500 to 1800</span>
+    </h1>
+    <p class="hero-sub">62 interactive boards. 14 opening systems. Puzzles, tactics, endgames, and deep theory &mdash; everything you need to break through your rating ceiling.</p>
+    <div class="hero-actions">
+      <a href="https://anatoleferera.github.io/Chess-Guide/chess-guide.html" class="btn-gold">Open the Guide &rarr;</a>
+      <a href="#modules" class="btn-outline">Explore Contents &darr;</a>
+    </div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><span class="stat-n">62</span><span class="stat-l">Interactive Boards</span></div>
+  <div class="stat"><span class="stat-n">14</span><span class="stat-l">Opening Systems</span></div>
+  <div class="stat"><span class="stat-n">15</span><span class="stat-l">Puzzles &middot; 3 Tiers</span></div>
+  <div class="stat"><span class="stat-n">Free</span><span class="stat-l">No Account Needed</span></div>
+</div>
+
+<div class="preview">
+  <div class="section-wrap">
+    <div class="board-wrap" data-anim>
+      <div class="mini-board" id="miniBoard"></div>
+    </div>
+    <div class="preview-text" data-anim>
+      <span class="eyebrow">How it works</span>
+      <h2 class="sec-title">Step through every<br>position <em>move by move</em></h2>
+      <ul class="feature-list">
+        <li>Click the arrow buttons to advance through fully annotated move sequences</li>
+        <li>Highlights and arrows appear at each critical moment explaining why</li>
+        <li>Warning boxes flag the most common mistakes at your rating level</li>
+        <li>Free Play mode &mdash; drag pieces and explore variations yourself</li>
+        <li>Rotating puzzle bank across three difficulty tiers (~1600, ~1900, ~2100)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap" id="modules">
+  <div class="modules-header">
+    <div>
+      <span class="eyebrow">Contents</span>
+      <h2 class="sec-title">Everything you need<br>to <em>break 1800</em></h2>
+    </div>
+    <a href="https://anatoleferera.github.io/Chess-Guide/chess-guide.html" class="btn-outline">Open Guide &rarr;</a>
+  </div>
+  <div class="grid">
+    <div class="module wide" data-anim>
+      <span class="mod-icon">&#9812;</span>
+      <span class="mod-tag">As White</span>
+      <div class="mod-name">White Opening Repertoire</div>
+      <div class="mod-desc">London System, Italian Game, Queen&rsquo;s Gambit, QGA, and the R&eacute;ti. Includes a trap for punishing 1...e5?! against 1.d4 with the Nd5 fork.</div>
+      <span class="mod-count">6 boards</span>
+    </div>
+    <div class="module" data-anim>
+      <span class="mod-icon">&#9819;</span>
+      <span class="mod-tag">vs 1.e4</span>
+      <div class="mod-name">Fighting 1.e4</div>
+      <div class="mod-desc">French, Caro-Kann, Pirc, Scandinavian, Petroff, plus the full Ruy L&oacute;pez &mdash; Berlin, Classical, and Exchange.</div>
+      <span class="mod-count">11 boards</span>
+    </div>
+    <div class="module" data-anim>
+      <span class="mod-icon">&#9816;</span>
+      <span class="mod-tag">Hypermodern</span>
+      <div class="mod-name">Alekhine Defence</div>
+      <div class="mod-desc">Four Pawns, Modern, Chase and Brooklyn variations. Provoke the centre then undermine it.</div>
+      <span class="mod-count">4 boards</span>
+    </div>
+    <div class="module wide" data-anim>
+      <span class="mod-icon">&#9820;</span>
+      <span class="mod-tag">vs 1.d4</span>
+      <div class="mod-name">Fighting 1.d4 + King&rsquo;s &amp; Queen&rsquo;s Indian</div>
+      <div class="mod-desc">Nimzo, QGD, QGA, Gr&uuml;nfeld &mdash; plus King&rsquo;s Indian (3 lines) and Queen&rsquo;s Indian (3 lines) on their own dedicated pages.</div>
+      <span class="mod-count">12 boards</span>
+    </div>
+    <div class="module" data-anim>
+      <span class="mod-icon">&#9823;</span>
+      <span class="mod-tag">vs Queen&rsquo;s Gambit</span>
+      <div class="mod-name">QG Defences</div>
+      <div class="mod-desc">QGD Lasker, Slav Defence, QGA with the ...e5 counterattack, and Tarrasch IQP play.</div>
+      <span class="mod-count">4 boards</span>
+    </div>
+    <div class="module" data-anim>
+      <span class="mod-icon">&#9818;</span>
+      <span class="mod-tag">Sicilian</span>
+      <div class="mod-name">Sicilian Defence</div>
+      <div class="mod-desc">Najdorf, Dragon, Scheveningen, plus 2.Bc4 lines with ...e6 and ...g6 responses.</div>
+      <span class="mod-count">5 boards</span>
+    </div>
+    <div class="module" data-anim>
+      <span class="mod-icon">&#9876;</span>
+      <span class="mod-tag">Anti-Sicilian</span>
+      <div class="mod-name">Anti-Sicilian Systems</div>
+      <div class="mod-desc">Alapin, Grand Prix Attack, Smith-Morra, and the Closed Sicilian &mdash; the four you&rsquo;ll face every session.</div>
+      <span class="mod-count">4 boards</span>
+    </div>
+    <div class="module" data-anim>
+      <span class="mod-icon">&#9889;</span>
+      <span class="mod-tag">Strategy + Tactics</span>
+      <div class="mod-name">Middlegame, Endgames &amp; Tactics</div>
+      <div class="mod-desc">Outposts, pawn breaks, IQP. King &amp; pawn, Lucena, Philidor. Fork, pin, back rank mate motifs.</div>
+      <span class="mod-count">9 boards</span>
+    </div>
+    <div class="module wide" data-anim>
+      <span class="mod-icon">&#129529;</span>
+      <span class="mod-tag">Puzzles + Theory</span>
+      <div class="mod-name">Daily Puzzles &amp; Deep Theory</div>
+      <div class="mod-desc">15 rotating puzzles across ~1600, ~1900, and ~2100 tiers. Plus 5 theory boards covering IQP, hanging pawns, prophylaxis, open files, and weak squares.</div>
+      <span class="mod-count">15 puzzles &middot; 5 boards</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><span>&#9822;</span></div>
+
+<div class="path-wrap">
+  <span class="eyebrow">The Approach</span>
+  <h2 class="sec-title">A structured path to<br><em>real improvement</em></h2>
+  <div class="steps">
+    <div class="step" data-step><div class="step-n">01</div><div><h3>Build a solid opening repertoire</h3><p>One reliable system as White, one solid response to each of 1.e4 and 1.d4. Consistency matters more than variety at 1500. Every opening tab shows the plans behind the moves.</p></div></div>
+    <div class="step" data-step><div class="step-n">02</div><div><h3>Understand structures, not lines</h3><p>The middlegame section teaches the three structural concepts that drive most positions &mdash; outposts, pawn breaks, and the IQP. Once you recognise these, the right plan becomes visible without deep calculation.</p></div></div>
+    <div class="step" data-step><div class="step-n">03</div><div><h3>Solve tactical patterns daily</h3><p>The puzzle bank rotates through 15 positions at three difficulty levels. At 1500, tactical awareness is the single biggest source of rating points.</p></div></div>
+    <div class="step" data-step><div class="step-n">04</div><div><h3>Convert your winning endgames</h3><p>The three essential endgames &mdash; king and pawn opposition, Lucena, Philidor &mdash; cover almost every endgame you&rsquo;ll face. Master them and stop throwing away won games.</p></div></div>
+  </div>
+</div>
+
+<div class="quote-wrap" data-anim>
+  <blockquote>&ldquo;Chess is not about memorising moves. It is about understanding <em>why</em> each move is played.&rdquo;</blockquote>
+  <cite>&mdash; The guiding principle of this guide</cite>
+</div>
+
+<div class="cta-section">
+  <div class="cta-grid-bg"></div>
+  <div style="position:relative;z-index:1">
+    <span class="eyebrow" style="display:block;margin-bottom:14px">Free &middot; No Account &middot; No Ads</span>
+    <h2 class="sec-title">Ready to improve?</h2>
+    <p class="sec-body">Everything is in one file. Open the guide, pick a section from the sidebar, and start stepping through boards.</p>
+    <a href="https://anatoleferera.github.io/Chess-Guide/chess-guide.html" class="btn-gold" style="font-size:13px;padding:16px 44px">Open the Guide &rarr;</a>
+    <p class="free-note">Works in any browser &middot; No download required</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo"><span>&#9823;</span> Chess Mastery Guide</div>
+  <p>anatoleferera.github.io/Chess-Guide</p>
+</footer>
+
+<script>
+const POS=[['r',null,'b',null,'k',null,null,'r'],['p','p',null,null,'b','p','p','p'],[null,null,'n','p',null,'n',null,null],[null,null,null,null,'p',null,null,null],[null,null,null,'N','P',null,null,null],[null,null,'N',null,null,'N',null,null],['P','P','P',null,null,'P','P','P'],['R',null,'B','Q',null,'R','K',null]];
+const G={K:'&#9812;',Q:'&#9813;',R:'&#9814;',B:'&#9815;',N:'&#9816;',P:'&#9817;',k:'&#9818;',q:'&#9819;',r:'&#9820;',b:'&#9821;',n:'&#9822;',p:'&#9823;'};
+const mb=document.getElementById('miniBoard');
+if(mb){for(let r=0;r<8;r++)for(let c=0;c<8;c++){const sq=document.createElement('div');sq.className='sq '+((r+c)%2===0?'l':'d');const p=POS[r][c];if(p){const s=document.createElement('span');s.className=p===p.toUpperCase()?'wp':'bp';s.innerHTML=G[p];sq.appendChild(s);}mb.appendChild(sq);}}
+
+const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(!e.isIntersecting)return;const el=e.target;const d=(el.dataset.delay||0)+'ms';el.style.animation=(el.dataset.step!==undefined?'slideIn':'fadeUp')+' .65s '+d+' forwards';io.unobserve(el);});},{threshold:0.1});
+document.querySelectorAll('[data-anim]').forEach((el,i)=>{el.dataset.delay=(i%4)*90;io.observe(el);});
+document.querySelectorAll('[data-step]').forEach((el,i)=>{el.dataset.delay=i*110;io.observe(el);});
+const sio=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;e.target.querySelectorAll('.stat').forEach((s,i)=>{s.style.animation='fadeUp .6s '+(i*100)+'ms forwards';});sio.unobserve(e.target);});},{threshold:0.2});
+const se=document.querySelector('.stats');if(se)sio.observe(se);
+</script>
+</body>
+</html>
